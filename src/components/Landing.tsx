@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Landing (): JSX.Element {
   return (
@@ -8,7 +9,9 @@ function Landing (): JSX.Element {
         <h2>Track, share, and discover your favorite anime and manga with AniList.</h2>
       </div>
       <FeaturesCards />
-      <button>Join now</button>
+      <Link to='/signup'>
+        <button>Join now</button>
+      </Link>
     </div>
   )
 }
