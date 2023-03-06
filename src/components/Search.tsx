@@ -1,6 +1,6 @@
 import Filters from './Filters'
 import SearchLanding from './SearchLanding'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom';
 
 function Search (): JSX.Element {
@@ -13,6 +13,21 @@ function Search (): JSX.Element {
   const [streamingOn, setStreamingOn] = useState<string[]>();
   const [countryOfOrigin, setCountryOfOrigin] = useState<string>();
   const [sourceMaterial, setSourceMaterial] = useState<string>();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearch(undefined);
+    setGenres(undefined);
+    setYear(undefined);
+    setSeason(undefined);
+    setFormat(undefined);
+    setFormat(undefined);
+    setAiringStatus(undefined);
+    setStreamingOn(undefined);
+    setCountryOfOrigin(undefined);
+    setSourceMaterial(undefined);
+    setSearchParams({});
+  }, []);
 
   return (
     <div>
