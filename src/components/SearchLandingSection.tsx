@@ -31,7 +31,7 @@ function SearchLandingSection ({ title, data }: { title: string, data: Data[] })
       <h2>{title}</h2>
       {data.map((media): JSX.Element => {
         return (
-          <MediaCard media={media}/>
+          <MediaCard key={media.title.romaji} media={media}/>
         )
       })}
     </div>
@@ -41,7 +41,7 @@ function SearchLandingSection ({ title, data }: { title: string, data: Data[] })
 function MediaCard({media}: {media: Data}) {
   const [showInfo, setShowInfo] = useState(false);
   return (
-    <div key={media.title.romaji}>
+    <div>
       <div onMouseOver={() => setShowInfo(true)} onMouseLeave={() => setShowInfo(false)}>
         <img src={media.coverImage.medium} />
         <p>{media.title.romaji}</p>
@@ -70,7 +70,7 @@ function HoverCard({media}: {media: Data}) {
       </div>
       <div className='genres'>
         {media.genres ? media.genres.slice(0, 3).map((genre) => {
-          return <div>{genre}</div>
+          return <div key={`hovercard-${genre}`}>{genre}</div>
         }) : null}
       </div>
     </div>
