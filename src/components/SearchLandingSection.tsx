@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { formatQueries, formatsData } from '../data/data'
+import { getKeyByValue } from '../data/utils'
 
 type Data = {
   title: {
@@ -65,7 +66,7 @@ function HoverCard({media}: {media: Data}) {
       </div>
       <div className='studios'>{media.studios ? media.studios.nodes[0].name : null}</div>
       <div className='info'>
-        <span>{media.format ? formatQueries[media.format] : null}</span>
+        <span>{media.format ? getKeyByValue(formatQueries, media.format) : null}</span>
         {media.episodes ? <><span>-</span><span>{media.episodes}</span></>: null}
       </div>
       <div className='genres'>

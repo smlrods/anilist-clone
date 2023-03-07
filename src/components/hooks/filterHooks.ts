@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
+import { getKeyByValue } from "../../data/utils";
 
 function useUpdateSearchParams(title: string, filter: string | number | undefined, filterQueries?: {[key: string]: string | number}) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,10 +48,6 @@ function useUpdateSearchMultiParams(title: string, filter: string[] | undefined,
       setSearchParams(searchParams);
     }
   }, [filter])
-}
-
-function getKeyByValue(object: {[key: string]: string | number}, value: string | number): any{
-  return Object.keys(object).find(key => object[key] === value);
 }
 
 function useGetSearchParams(title: string, setFilter: React.Dispatch<React.SetStateAction<number | undefined>> | React.Dispatch<React.SetStateAction<string | undefined>>, filterQueries?: {[key: string]: string}) {
@@ -118,4 +115,4 @@ function useOutsideAlerter(ref: any, setToggleDropdown: React.Dispatch<React.Set
   }, [ref]);
 }
 
-export { useUpdateSearchParams, useUpdateSearchMultiParams, useGetSearchParams, useGetSearchMultiParams, useOutsideAlerter};
+export { useUpdateSearchParams, useUpdateSearchMultiParams, useGetSearchParams, useGetSearchMultiParams, useOutsideAlerter };
