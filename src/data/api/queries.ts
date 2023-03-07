@@ -25,6 +25,8 @@ const trending = {
           timeUntilAiring
           episode
         }
+        season
+        seasonYear
       }
     }
   }`,
@@ -59,6 +61,8 @@ const popularThisSeason = {
           timeUntilAiring
           episode
         }
+        season
+        seasonYear
       }
     }
   }`, 
@@ -93,6 +97,8 @@ const upcomingNexTSeasonList = {
           timeUntilAiring
           episode
         }
+        season
+        seasonYear
       }
     }
   }`,
@@ -127,6 +133,8 @@ const allTimePopular = {
           timeUntilAiring
           episode
         }
+        season
+        seasonYear
       }
     }
   }`,
@@ -160,6 +168,8 @@ const top100 = {
           timeUntilAiring
           episode
         }
+        season
+        seasonYear
       }
     }
   }`,

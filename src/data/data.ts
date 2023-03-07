@@ -397,6 +397,20 @@ const formatsData = [
   "Music"
 ];
 
+interface FormatQueries {
+  [key: string]: string
+}
+
+const formatQueries: FormatQueries = {
+  TV: 'TV Show',
+  TV_SHORT: 'TV Short',
+  MOVIE: 'Movie',
+  SPECIAL: 'Special',
+  OVA: 'OVA',
+  ONA: 'ONA',
+  MUSIC: 'Music',
+}
+
 const airingStatusData = [
   "Airing",
   "Finished",
@@ -465,181 +479,199 @@ const sourceMaterialData = [
 
 const trending = [
   {
-    title: {
-      romaji: "ONE PIECE",
-      english: "ONE PIECE",
-      native: "ONE PIECE"
-    },
-    coverImage: {
-      medium: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21-tXMN3Y20PIL9.jpg"
-    },
-    averageScore: 87,
-    genres: [
-      "Action",
-      "Adventure",
-      "Comedy",
-      "Drama",
-      "Fantasy"
-    ],
-    episodes: null,
-    studios: {
-      nodes: [
+          "id": 136430,
+          "title": {
+            "romaji": "VINLAND SAGA SEASON 2",
+            "english": "Vinland Saga Season 2",
+            "native": "ヴィンランド・サガ SEASON2"
+          },
+          "coverImage": {
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136430-f8Iza5GEynRW.jpg"
+          },
+          "averageScore": 85,
+          "genres": [
+            "Action",
+            "Adventure",
+            "Drama"
+          ],
+          "episodes": 24,
+          "studios": {
+            "nodes": [
+              {
+                "name": "MAPPA"
+              }
+            ]
+          },
+          "format": "TV",
+          "nextAiringEpisode": {
+            "timeUntilAiring": 587897,
+            "episode": 10
+          },
+          "season": "WINTER",
+          "seasonYear": 2023
+        },
         {
-          name: "Toei Animation"
-        }
-      ]
-    },
-    format: "TV",
-    nextAiringEpisode: {
-      timeUntilAiring: 1680953,
-      episode: 1054
-    }
-  },
-  {
-    title: {
-      romaji: "Blue Lock",
-      english: "BLUELOCK",
-      native: "ブルーロック"
-    },
-    coverImage: {
-      medium: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx137822-4dVWMSHLpGf8.png"
-    },
-    averageScore: 81,
-    genres: [
-      "Action",
-      "Drama",
-      "Sports"
-    ],
-    episodes: 24,
-    studios: {
-      nodes: [
+          "id": 21,
+          "title": {
+            "romaji": "ONE PIECE",
+            "english": "ONE PIECE",
+            "native": "ONE PIECE"
+          },
+          "coverImage": {
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21-tXMN3Y20PIL9.jpg"
+          },
+          "averageScore": 87,
+          "genres": [
+            "Action",
+            "Adventure",
+            "Comedy",
+            "Drama",
+            "Fantasy"
+          ],
+          "episodes": null,
+          "studios": {
+            "nodes": [
+              {
+                "name": "Toei Animation"
+              }
+            ]
+          },
+          "format": "TV",
+          "nextAiringEpisode": {
+            "timeUntilAiring": 1052297,
+            "episode": 1054
+          },
+          "season": "FALL",
+          "seasonYear": 1999
+        },
         {
-          name: "8-bit"
-        }
-      ]
-    },
-    format: "TV",
-    nextAiringEpisode: {
-      timeUntilAiring: 442553,
-      episode: 21
-    }
-  },
-  {
-    title: {
-      romaji: "Boku no Hero Academia 6",
-      english: "My Hero Academia Season 6",
-      native: "僕のヒーローアカデミア６"
-    },
-    coverImage: {
-      medium: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139630-oc4l8OtJ4tRQ.jpg"
-    },
-    averageScore: 82,
-    genres: [
-      "Action",
-      "Adventure",
-      "Comedy"
-    ],
-    episodes: 25,
-    studios: {
-      nodes: [
+          "id": 137822,
+          "title": {
+            "romaji": "Blue Lock",
+            "english": "BLUELOCK",
+            "native": "ブルーロック"
+          },
+          "coverImage": {
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx137822-4dVWMSHLpGf8.png"
+          },
+          "averageScore": 81,
+          "genres": [
+            "Action",
+            "Drama",
+            "Sports"
+          ],
+          "episodes": 24,
+          "studios": {
+            "nodes": [
+              {
+                "name": "8-bit"
+              }
+            ]
+          },
+          "format": "TV",
+          "nextAiringEpisode": {
+            "timeUntilAiring": 418697,
+            "episode": 22
+          },
+          "season": "FALL",
+          "seasonYear": 2022
+        },
         {
-          name: "bones"
-        }
-      ]
-    },
-    format: "TV",
-    nextAiringEpisode: {
-      timeUntilAiring: 413753,
-      episode: 22
-    }
-  },
-  {
-    title: {
-      romaji: "Kage no Jitsuryokusha ni Naritakute!",
-      english: "The Eminence in Shadow",
-      native: "陰の実力者になりたくて！"
-    },
-    coverImage: {
-      medium: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130298-O7nR1Wrav2dH.jpg"
-    },
-    averageScore: 82,
-    genres: [
-      "Action",
-      "Comedy",
-      "Fantasy"
-    ],
-    episodes: 20,
-    studios: {
-      nodes: [
+          "id": 146984,
+          "title": {
+            "romaji": "Shingeki no Kyojin: The Final Season - Kanketsu-hen Zenpen",
+            "english": "Attack on Titan Final Season THE FINAL CHAPTERS Special 1",
+            "native": "進撃の巨人 The Final Season完結編 前編"
+          },
+          "coverImage": {
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146984-EnCsTCpLyIBi.jpg"
+          },
+          "averageScore": 89,
+          "genres": [
+            "Action",
+            "Drama",
+            "Fantasy",
+            "Mystery",
+            "Psychological"
+          ],
+          "episodes": 1,
+          "studios": {
+            "nodes": [
+              {
+                "name": "MAPPA"
+              }
+            ]
+          },
+          "format": "SPECIAL",
+          "nextAiringEpisode": null,
+          "season": "WINTER",
+          "seasonYear": 2023
+        },
         {
-          name: "Nexus"
-        }
-      ]
-    },
-    format: "TV",
-    nextAiringEpisode: null
-  },
-  {
-    title: {
-      romaji: "Benriya Saitou-san, Isekai ni Iku",
-      english: "Handyman Saitou in Another World",
-      native: "便利屋斎藤さん、異世界に行く"
-    },
-    coverImage: {
-      medium: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx144092-8EKzzZQofFlW.jpg"
-    },
-    averageScore: 68,
-    genres: [
-      "Adventure",
-      "Comedy",
-      "Fantasy",
-      "Slice of Life"
-    ],
-    episodes: 12,
-    studios: {
-      nodes: [
+          "id": 139630,
+          "title": {
+            "romaji": "Boku no Hero Academia 6",
+            "english": "My Hero Academia Season 6",
+            "native": "僕のヒーローアカデミア６"
+          },
+          "coverImage": {
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139630-oc4l8OtJ4tRQ.jpg"
+          },
+          "averageScore": 82,
+          "genres": [
+            "Action",
+            "Adventure",
+            "Comedy"
+          ],
+          "episodes": 25,
+          "studios": {
+            "nodes": [
+              {
+                "name": "bones"
+              }
+            ]
+          },
+          "format": "TV",
+          "nextAiringEpisode": {
+            "timeUntilAiring": 389897,
+            "episode": 23
+          },
+          "season": "FALL",
+          "seasonYear": 2022
+        },
         {
-          name: "C2C"
+          "id": 142193,
+          "title": {
+            "romaji": "Eiyuu-ou, Bu wo Kiwameru Tame Tenseisu: Soshite, Sekai Saikyou no Minarai Kishi♀",
+            "english": "Reborn to Master the Blade: From Hero-King to Extraordinary Squire",
+            "native": "英雄王、武を極めるため転生す ～そして、世界最強の見習い騎士♀～"
+          },
+          "coverImage": {
+            "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142193-3S6gtp7PHLNL.jpg"
+          },
+          "averageScore": 67,
+          "genres": [
+            "Action",
+            "Adventure",
+            "Comedy",
+            "Fantasy"
+          ],
+          "episodes": 12,
+          "studios": {
+            "nodes": [
+              {
+                "name": "Studio Comet"
+              }
+            ]
+          },
+          "format": "TV",
+          "nextAiringEpisode": {
+            "timeUntilAiring": 592397,
+            "episode": 10
+          },
+          "season": "WINTER",
+          "seasonYear": 2023
         }
-      ]
-    },
-    format: "TV",
-    nextAiringEpisode: {
-      timeUntilAiring: 518153,
-      episode: 9
-    }
-  },
-  {
-    title: {
-      romaji: "Fumetsu no Anata e Season 2",
-      english: "To Your Eternity Season 2",
-      native: "不滅のあなたへ Season 2"
-    },
-    coverImage: {
-      medium: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx138565-JzvDqH84ILzi.png"
-    },
-    averageScore: 77,
-    genres: [
-      "Adventure",
-      "Drama",
-      "Fantasy",
-      "Psychological",
-      "Supernatural"
-    ],
-    episodes: 10,
-    studios: {
-      nodes: [
-        {
-          name: "Drive"
-        }
-      ]
-    },
-    format: "TV",
-    nextAiringEpisode: {
-      timeUntilAiring: 505553,
-      episode: 19
-    }
-  }
 ]
 
-export { trending, genresData, yearsData, seasonsData, formatsData, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData };
+export { trending, genresData, yearsData, seasonsData, formatsData, formatQueries, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData };
