@@ -13,7 +13,6 @@ function Search (): JSX.Element {
   const [streamingOn, setStreamingOn] = useState<string[]>();
   const [countryOfOrigin, setCountryOfOrigin] = useState<string>();
   const [sourceMaterial, setSourceMaterial] = useState<string>();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const location = useLocation();
 
@@ -31,9 +30,6 @@ function Search (): JSX.Element {
       setSourceMaterial(undefined);
     }
   }, [location])
-
-  /* useEffect(() => {
-  }, []); */
 
   return (
     <div>
