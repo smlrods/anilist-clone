@@ -1,9 +1,11 @@
 import Filters from './Filters'
 import SearchLanding from './SearchLanding'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import Results, { Data } from './Results';
+import { trending } from '../data/data';
 
-function Search (): JSX.Element {
+function Search ({title, dataQuery}: {title?: string, dataQuery?: any}): JSX.Element {
   const [search, setSearch] = useState<string>();
   const [genres, setGenres] = useState<string[]>();
   const [year, setYear] = useState<number>();
@@ -14,7 +16,10 @@ function Search (): JSX.Element {
   const [countryOfOrigin, setCountryOfOrigin] = useState<string>();
   const [sourceMaterial, setSourceMaterial] = useState<string>();
 
+  const [showResults, setShowResults] = useState(false);
+
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(!location.search) {
@@ -23,16 +28,20 @@ function Search (): JSX.Element {
       setYear(undefined);
       setSeason(undefined);
       setFormat(undefined);
-      setFormat(undefined);
       setAiringStatus(undefined);
       setStreamingOn(undefined);
       setCountryOfOrigin(undefined);
       setSourceMaterial(undefined);
+      setShowResults(false);
+    } else {
+      setShowResults(true);
+      if (title) navigate('/search/anime', {replace: true});
     }
   }, [location])
 
   return (
     <div>
+      {title ? <h1>{title}</h1> : null}
       <Filters 
         setSearch={setSearch}
         setGenres={setGenres}
@@ -73,7 +82,7 @@ function Search (): JSX.Element {
         countryOfOrigin={countryOfOrigin}
         sourceMaterial={sourceMaterial}
       />
-      <SearchLanding />
+      {showResults || title ? <Results data={trending} /> : <SearchLanding />}
     </div>
   );
 }
