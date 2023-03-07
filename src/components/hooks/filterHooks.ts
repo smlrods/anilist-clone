@@ -1,14 +1,20 @@
 import { useEffect } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 
-function useUpdateSearchParams(title: string, filter: string | number | undefined) {
+function useUpdateSearchParams(title: string, filter: string | number | undefined, filterQueries?: {[key: string]: string | number}) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const name = title.toLowerCase();
     if(filter) {
-      searchParams.set(name, filter.toString());
-      setSearchParams(searchParams);
+      if (filterQueries) {
+        const filterQuery = filterQueries[filter.toString()]
+        searchParams.set(name, filterQuery.toString());
+        setSearchParams(searchParams);
+      } else {
+        searchParams.set(name, filter.toString());
+        setSearchParams(searchParams);
+      }
     } else {
       searchParams.delete(name)
       setSearchParams(searchParams);
@@ -16,7 +22,7 @@ function useUpdateSearchParams(title: string, filter: string | number | undefine
   }, [filter]);
 }
 
-function useUpdateSearchMultiParams(title: string, filter: string[] | undefined) {
+function useUpdateSearchMultiParams(title: string, filter: string[] | undefined, filterQueries?: {[key: string]: string | number}) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -24,10 +30,18 @@ function useUpdateSearchMultiParams(title: string, filter: string[] | undefined)
     searchParams.delete(name)
     setSearchParams(searchParams);
     if(filter) {
-      filter.forEach((element) => {
-        searchParams.append(name, element);
-      });
-      setSearchParams(searchParams);
+      if (filterQueries) {
+        filter.forEach((element) => {
+          let filterQuery = filterQueries[element];
+          searchParams.append(name, filterQuery.toString());
+        });
+        setSearchParams(searchParams);
+      } else {
+        filter.forEach((element) => {
+          searchParams.append(name, element);
+        });
+        setSearchParams(searchParams);
+      }
     } else {
       searchParams.delete(name)
       setSearchParams(searchParams);
@@ -35,7 +49,11 @@ function useUpdateSearchMultiParams(title: string, filter: string[] | undefined)
   }, [filter])
 }
 
-function useGetSearchParams(title: string, setFilter: React.Dispatch<React.SetStateAction<number | undefined>> | React.Dispatch<React.SetStateAction<string | undefined>>) {
+function getKeyByValue(object: {[key: string]: string | number}, value: string | number): any{
+  return Object.keys(object).find(key => object[key] === value);
+}
+
+function useGetSearchParams(title: string, setFilter: React.Dispatch<React.SetStateAction<number | undefined>> | React.Dispatch<React.SetStateAction<string | undefined>>, filterQueries?: {[key: string]: string}) {
   const location = useLocation();
 
   useEffect(() => {
@@ -43,24 +61,42 @@ function useGetSearchParams(title: string, setFilter: React.Dispatch<React.SetSt
     let searchCurrent: any = params.get(title.toLowerCase());
 
     if(searchCurrent) {
-      if(+searchCurrent) {
-        searchCurrent = +searchCurrent;
-        setFilter(searchCurrent);
+      if (filterQueries) {
+        setFilter(getKeyByValue(filterQueries, searchCurrent));
       } else {
-        setFilter(searchCurrent);
+        if(+searchCurrent) {
+          searchCurrent = +searchCurrent;
+          setFilter(searchCurrent);
+        } else {
+          setFilter(searchCurrent);
+        }
       }
     }
   }, []);
 }
 
-function useGetSearchMultiParams(title: string, setFilter: React.Dispatch<React.SetStateAction<string[]| undefined>>) {
+function useGetSearchMultiParams(title: string, setFilter: React.Dispatch<React.SetStateAction<string[]| undefined>>, filterQueries?: {[key: string]: string | number}) {
   const location = useLocation();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const searchCurrent: any = params.getAll(title.toLowerCase());
+    const searchCurrent: string[] = params.getAll(title.toLowerCase());
     if(searchCurrent) {
-      setFilter(searchCurrent);
+      if (filterQueries) {
+        const filterQuery: string[] = []
+
+        searchCurrent.forEach((element) => {
+          if (+element) {
+            filterQuery.push(getKeyByValue(filterQueries, +element));
+          } else {
+            filterQuery.push(getKeyByValue(filterQueries, element));
+          }
+        });
+
+        setFilter(filterQuery);
+      } else {
+        setFilter(searchCurrent);
+      }
     }
   }, []);
 }

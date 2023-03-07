@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { genresData, yearsData, seasonsData, formatsData, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData } from '../data/data';
+import { genresData, yearsData, seasonsData, formatsData, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData, formatQueries, seasonsQueries, yearsQueries, airingStatusQueries, streamingOnQueries, countryOrOriginQueries, sourceMaterialQueries } from '../data/data';
 import { useGetSearchMultiParams, useGetSearchParams, useUpdateSearchMultiParams, useUpdateSearchParams, useOutsideAlerter } from './hooks/filterHooks';
 
 type FiltersProps = {
@@ -52,22 +52,22 @@ function Filters({
   // Get URL Search Params
   useGetSearchMultiParams('Genres', setGenres);
   useGetSearchParams('Year', setYear);
-  useGetSearchParams('Season', setSeason);
-  useGetSearchMultiParams('Format', setFormats);
-  useGetSearchParams('Airing Status', setAiringStatus);
-  useGetSearchMultiParams('Streaming On', setStreamingOn);
-  useGetSearchParams('Country Of Origin', setCountryOfOrigin);
-  useGetSearchParams('Source Material', setSourceMaterial);
+  useGetSearchParams('Season', setSeason, seasonsQueries);
+  useGetSearchMultiParams('Format', setFormats, formatQueries);
+  useGetSearchParams('Airing Status', setAiringStatus, airingStatusQueries);
+  useGetSearchMultiParams('Streaming On', setStreamingOn, streamingOnQueries);
+  useGetSearchParams('Country Of Origin', setCountryOfOrigin, countryOrOriginQueries);
+  useGetSearchParams('Source Material', setSourceMaterial, sourceMaterialQueries);
 
   // Update URL Search Params
   useUpdateSearchMultiParams('Genres', genres);
   useUpdateSearchParams('Year', year);
-  useUpdateSearchParams('Season', season);
-  useUpdateSearchMultiParams('Format', formats);
-  useUpdateSearchParams('Airing Status', airingStatus);
-  useUpdateSearchMultiParams('Streaming On', streamingOn);
-  useUpdateSearchParams('Country Of Origin', countryOfOrigin);
-  useUpdateSearchParams('Source Material', sourceMaterial);
+  useUpdateSearchParams('Season', season, seasonsQueries);
+  useUpdateSearchMultiParams('Format', formats, formatQueries);
+  useUpdateSearchParams('Airing Status', airingStatus, airingStatusQueries);
+  useUpdateSearchMultiParams('Streaming On', streamingOn, streamingOnQueries);
+  useUpdateSearchParams('Country Of Origin', countryOfOrigin, countryOrOriginQueries);
+  useUpdateSearchParams('Source Material', sourceMaterial, sourceMaterialQueries);
 
   return (
     <div>

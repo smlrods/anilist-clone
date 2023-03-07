@@ -1,7 +1,7 @@
 import Filters from './Filters'
 import SearchLanding from './SearchLanding'
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 function Search (): JSX.Element {
   const [search, setSearch] = useState<string>();
@@ -15,19 +15,25 @@ function Search (): JSX.Element {
   const [sourceMaterial, setSourceMaterial] = useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const location = useLocation();
+
   useEffect(() => {
-    setSearch(undefined);
-    setGenres(undefined);
-    setYear(undefined);
-    setSeason(undefined);
-    setFormat(undefined);
-    setFormat(undefined);
-    setAiringStatus(undefined);
-    setStreamingOn(undefined);
-    setCountryOfOrigin(undefined);
-    setSourceMaterial(undefined);
-    setSearchParams({});
-  }, []);
+    if(!location.search) {
+      setSearch(undefined);
+      setGenres(undefined);
+      setYear(undefined);
+      setSeason(undefined);
+      setFormat(undefined);
+      setFormat(undefined);
+      setAiringStatus(undefined);
+      setStreamingOn(undefined);
+      setCountryOfOrigin(undefined);
+      setSourceMaterial(undefined);
+    }
+  }, [location])
+
+  /* useEffect(() => {
+  }, []); */
 
   return (
     <div>

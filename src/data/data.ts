@@ -378,7 +378,34 @@ const arrayRange = (start: number, stop: number, step: number) =>
     );
 
 
-const yearsData = arrayRange(1940, new Date().getFullYear() + 1, 1).reverse();
+const yearsData = (arrayRange(1940, new Date().getFullYear() + 1, 1).reverse());
+
+function createNumberObject(start: number, end: number): { [key: string]: number } {
+  const obj: { [key: string]: number } = {};
+
+  for (let i of Array.from({ length: end - start + 1 }, (_, i) => i + start).reverse()) {
+    obj[i.toString()] = i;
+  }
+
+  return obj;
+}
+
+interface YearQueries {
+  [key: string]: number
+}
+
+const yearsQueries: YearQueries = createNumberObject(1940, new Date().getFullYear() + 1);
+
+interface SeasonsQueries {
+  [key: string]: string
+}
+
+const seasonsQueries: SeasonsQueries = {
+  "Winter": "WINTER",
+  "Spring": "SPRING",
+  "Summer": "SUMMER",
+  "Fall": "FALL"
+}
 
 const seasonsData = [
   "Winter",
@@ -402,13 +429,24 @@ interface FormatQueries {
 }
 
 const formatQueries: FormatQueries = {
-  TV: 'TV Show',
-  TV_SHORT: 'TV Short',
-  MOVIE: 'Movie',
-  SPECIAL: 'Special',
-  OVA: 'OVA',
-  ONA: 'ONA',
-  MUSIC: 'Music',
+  'TV Show': 'TV',
+  'TV Short': 'TV_SHORT',
+  'Movie': 'MOVIE',
+  'Special': 'SPECIAL',
+  'OVA': 'OVA',
+  'ONA': 'ONA',
+  'Music': 'MUSIC',
+}
+
+interface AiringStatusQueries {
+  [key: string]: string
+}
+
+const airingStatusQueries: AiringStatusQueries = {
+  "Airing": "RELEASING",
+  "Finished": "FINISHED",
+  "Not Yet Aired": "NOT_YET_RELEASED",
+  "Cancelled": "CANCELLED"
 }
 
 const airingStatusData = [
@@ -417,6 +455,44 @@ const airingStatusData = [
   "Not Yet Aired",
   "Cancelled"
 ];
+
+interface StreamingOnQueries {
+  [key: string]: number 
+}
+
+const streamingOnQueries: StreamingOnQueries = {
+  "Crunchyroll": 5,
+  "Hulu": 7,
+  "Funimation": 8,
+  "Netflix": 10,
+  "YouTube": 13,
+  "HIDIVE": 20,
+  "Amazon": 21,
+  "Vimeo": 22,
+  "VRV": 24,
+  "HBO Max": 25,
+  "Wakanim": 26,
+  "RetroCrush": 27,
+  "Adult Swim": 28,
+  "Japanese Film Archives": 29,
+  "Tubi TV": 30,
+  "Crackle": 31,
+  "AsianCrush": 32,
+  "Midnight Pulp": 33,
+  "CONtv": 34,
+  "Fakku": 36,
+  "Bilibili": 45,
+  "Disney Plus": 118,
+  "Bilibili TV": 119,
+  "Tencent Video": 121,
+  "iQ": 122,
+  "Youku": 126,
+  "WeTV": 131,
+  "Niconico Video": 180,
+  "Rooster Teeth": 195,
+  "iQIYI": 204,
+  "Star+": 210,
+}
 
 const streamingOnData = [
   "Crunchyroll",
@@ -452,12 +528,45 @@ const streamingOnData = [
   "Star+",
 ];
 
+interface CoutryOfOriginQueries {
+  [key: string]: string
+}
+
+const countryOrOriginQueries: CoutryOfOriginQueries = {
+  "Japan": "JP",
+  "South Korea": "KR",
+  "China": "CN",
+  "Taiwan": "TW"
+}
+
 const countryOfOriginData = [
   "Japan",
   "South Korea",
   "China",
   "Taiwan"
 ];
+
+interface SourceMaterialQueries {
+  [key: string]: string;
+}
+
+const sourceMaterialQueries: SourceMaterialQueries = {
+  "Original": "ORIGINAL",
+  "Manga": "MANGA",
+  "Light Novel": "LIGHT_NOVEL",
+  "Web Novel": "WEB_NOVEL",
+  "Novel": "NOVEL",
+  "Anime": "ANIME",
+  "Visual Novel": "VISUAL_NOVEL",
+  "Video Game": "VIDEO_GAME",
+  "Doujinshi": "DOUJINSHI",
+  "Comic": "COMIC",
+  "Live Action": "LIVE_ACTION",
+  "Game": "GAME",
+  "Multimedia Project": "MULTIMEDIA_PROJECT",
+  "Picture Book": "PICTURE_BOOK",
+  "Other": "OTHER",
+}
 
 const sourceMaterialData = [
   "Original",
@@ -674,4 +783,4 @@ const trending = [
         }
 ]
 
-export { trending, genresData, yearsData, seasonsData, formatsData, formatQueries, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData };
+export { trending, genresData, yearsData, yearsQueries, seasonsData, seasonsQueries, formatsData, formatQueries, airingStatusData, airingStatusQueries, streamingOnData, streamingOnQueries, countryOfOriginData, countryOrOriginQueries, sourceMaterialQueries,sourceMaterialData };
