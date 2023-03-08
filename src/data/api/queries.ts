@@ -1,4 +1,39 @@
-const trending = {
+const filterQuery = {
+  query: `
+    query($type: MediaType = ANIME, $perPage: Int, $page: Int, $search: String, $genres: [String], $tags: [String], $year: Int, $season: MediaSeason, $format: [MediaFormat], $status: MediaStatus, $streamingon: [Int], $countryOfOrigin: CountryCode, $source: MediaSource) {
+      Page(perPage: $perPage, page: $page) {
+      media(sort: POPULARITY_DESC, type: $type, search: $search, genre_in: $genres, tag_in: $tags, seasonYear: $year, season: $season, format_in: $format, status: $status, licensedById_in: $streamingon, countryOfOrigin: $countryOfOrigin, source: $source) {
+        id
+        title {
+          romaji
+          english
+          native
+        }
+        coverImage {
+          medium
+        }
+        averageScore
+        genres
+        episodes
+        studios(isMain: true) {
+          nodes {
+            name
+          }
+        }
+        format
+        nextAiringEpisode {
+          timeUntilAiring
+          episode
+        }
+        season
+        seasonYear
+      }
+    }
+  }`,
+  variables: { }
+} 
+
+const trendingQuery = {
   query: `
     query($perPage: Int, $page: Int) {
       Page(perPage: $perPage, page: $page) {
@@ -36,47 +71,51 @@ const trending = {
   }
 }
 
-const popularThisSeason = {
+const popularThisSeasonQuery = {
   query: `
-    query: query ($season: MediaSeason!, $sort: [MediaSort]) {
-    Page {
-      media(season: $season, sort: $sort, type: ANIME) {
-        id
-        title {
-          romaji
-          english
-          native
-        }
-        coverImage {
-          medium
-        }
-        averageScore
-        studios(isMain: true) {
-          nodes {
-            name
+    query ($perPage: Int, $page: Int, $season: MediaSeason!, $seasonYear: Int, $sort: [MediaSort]) {
+      Page(perPage: $perPage, page: $page) {
+        media(season: $season, seasonYear: $seasonYear,sort: $sort, type: ANIME) {
+          id
+          title {
+            romaji
+            english
+            native
           }
+          coverImage {
+            medium
+          }
+          averageScore
+          genres
+          studios(isMain: true) {
+            nodes {
+              name
+            }
+          }
+          format
+          nextAiringEpisode {
+            timeUntilAiring
+            episode
+          }
+          season
+          seasonYear
         }
-        format
-        nextAiringEpisode {
-          timeUntilAiring
-          episode
-        }
-        season
-        seasonYear
       }
-    }
-  }`, 
-  varibles: {
-    season: 'WINTER',
-    sort: ['POPULARITY_DESC']
+    }`,
+  variables: {
+    season: "WINTER",
+    seasonYear: new Date().getFullYear(),
+    sort: ["POPULARITY_DESC"],
+    perPage: 10,
+    page: 1
   }
-}
+};
 
-const upcomingNexTSeasonList = {
+const upcomingNexTSeasonListQuery = {
   query: `
-    query ($season: MediaSeason!, $sort: [MediaSort]) {
-    Page {
-      media(season: $season, sort: $sort, type: ANIME) {
+    query ($perPage: Int, $page: Int, $season: MediaSeason!, $sort: [MediaSort], $year: Int) {
+    Page(perPage: $perPage, page: $page) {
+      media(season: $season, seasonYear: $year,sort: $sort, type: ANIME) {
         id
         title {
           romaji
@@ -87,6 +126,7 @@ const upcomingNexTSeasonList = {
           medium
         }
         averageScore
+        genres
         studios(isMain: true) {
           nodes {
             name
@@ -105,13 +145,16 @@ const upcomingNexTSeasonList = {
   variables: {
     season: 'SPRING', // replace with the next season
     sort: ['POPULARITY_DESC'],
+    year: new Date().getFullYear(),
+    perPage: 10,
+    page: 1
   }
 };
 
-const allTimePopular = {
+const allTimePopularQuery = {
   query: `
-    query ($sort: [MediaSort]) {
-    Page {
+    query ($sort: [MediaSort], $page: Int, $perPage: Int) {
+    Page(page: $page, perPage: $perPage) {
       media(sort: $sort, type: ANIME) {
         id
         title {
@@ -129,6 +172,7 @@ const allTimePopular = {
           }
         }
         format
+        genres
         nextAiringEpisode {
           timeUntilAiring
           episode
@@ -138,15 +182,15 @@ const allTimePopular = {
       }
     }
   }`,
-  varibles: {
-    sort: ['POPULARITY_DESC']
+  variables: {
+    sort: ["POPULARITY_DESC"]
   }
 }
 
-const top100 = {
+const top100Query = {
   query: `
-    query ($perPage: Int, $sort: [MediaSort]) {
-    Page(perPage: $perPage) {
+    query ($perPage: Int, $page: Int, $sort: [MediaSort]) {
+    Page(perPage: $perPage, page: $page) {
       media(sort: $sort, type: ANIME) {
         id
         title {
@@ -158,6 +202,7 @@ const top100 = {
           medium
         }
         averageScore
+        genres
         studios(isMain: true) {
           nodes {
             name
@@ -173,10 +218,10 @@ const top100 = {
       }
     }
   }`,
-  varibles: {
+  variables: {
     perPage: 100,
     sort: ['SCORE_DESC'],
   }
 }
 
-export { trending, popularThisSeason, upcomingNexTSeasonList, allTimePopular, top100};
+export { filterQuery, trendingQuery, popularThisSeasonQuery, upcomingNexTSeasonListQuery, allTimePopularQuery, top100Query};

@@ -1,14 +1,14 @@
 import Landing from './Landing'
 import Search from './Search'
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import SearchLanding from './SearchLanding';
+import { Routes, Route } from 'react-router-dom'
+import { allTimePopularQuery, filterQuery, popularThisSeasonQuery, top100Query, trendingQuery, upcomingNexTSeasonListQuery } from '../data/api/queries';
 
 function Home(): JSX.Element {
   return (
     <div>
       <Landing />
-      <Search /> 
+      <Search query={trendingQuery}/> 
     </div>
   );
 }
@@ -50,17 +50,17 @@ function PageContent (): JSX.Element {
     <div>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/search/anime' element={<Search />} />
-          <Route path='/search/anime/trending' element={<Search title='Trending Anime'/>} />
-          <Route path='/search/anime/top-100' element={<Search title='Top 100 Anime'/>} />
-          <Route path='/search/anime/top-movies' element={<Search title='Top Anime Movies'/>} />
-          <Route path='/search/anime/this-season' element={<Search title='Winter 2023 Anime'/>} />
-          <Route path='/search/anime/next-season' element={<Search title='Anime Next Season - Airing Spring 2023'/>} />
-          <Route path='/search/anime/popular' element={<Search title='All-Time Popular Anime'/>} />
-          <Route path='/search/manga' element={<Search />} />
-          <Route path='/search/manga/top-100' element={<Search title='Trending Manga'/>} />
-          <Route path='/search/manga/trending' element={<Search title='Top 100 Manga' />} />
-          <Route path='/search/manga/top-manhwa' element={<Search title='Top Manhwa' />} />
+          <Route path='/search/anime' element={<Search query={filterQuery} />} />
+          <Route path='/search/anime/trending' element={<Search title='Trending Anime' query={trendingQuery}/>} />
+          <Route path='/search/anime/top-100' element={<Search title='Top 100 Anime' query={top100Query}/>} />
+          <Route path='/search/anime/top-movies' element={<Search title='Top Anime Movies' query={trendingQuery}/>} />
+          <Route path='/search/anime/this-season' element={<Search title='Winter 2023 Anime' query={popularThisSeasonQuery}/>} />
+          <Route path='/search/anime/next-season' element={<Search title='Anime Next Season - Airing Spring 2023' query={upcomingNexTSeasonListQuery}/>} />
+          <Route path='/search/anime/popular' element={<Search title='All-Time Popular Anime' query={allTimePopularQuery}/>} />
+          <Route path='/search/manga' element={<Search query={trendingQuery} />} />
+          <Route path='/search/manga/top-100' element={<Search title='Trending Manga' query={trendingQuery}/>} />
+          <Route path='/search/manga/trending' element={<Search title='Top 100 Manga' query={trendingQuery}/>} />
+          <Route path='/search/manga/top-manhwa' element={<Search title='Top Manhwa' query={trendingQuery}/>} />
           <Route path='/social' element={<Social />} />
           <Route path='/forum' element={<Forum />} />
           <Route path='/login' element={<Login />} />

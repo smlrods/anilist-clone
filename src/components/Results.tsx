@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import getData from "../data/api/getData";
 import { formatQueries } from '../data/data'
 import { getKeyByValue } from '../data/utils'
 
@@ -26,14 +27,23 @@ type Data = {
   seasonYear: number;
 }
 
-function Results({data}: {data: Data[]}) {
+function Results({query}: {query: any}) {
+  const [data, setData] = useState<Data[]>();
+  useEffect(() => {
+    getData(query.query, {...query.variables, page: 1, perPage: 6}).then((data) => {
+      setData(data.data.Page.media);
+    });
+  }, [query]);
+
   return (
     <div>
-      {data.map((media): JSX.Element => {
+      {data ?
+      data.map((media): JSX.Element => {
         return (
           <MediaCard key={media.title.romaji} media={media}/>
         )
-      })}
+      }) : <div>Loading</div>
+      }
     </div>
   );
 }
@@ -58,12 +68,12 @@ function HoverCard({media}: {media: Data}) {
         <div className='date'>
           {media.nextAiringEpisode ?
             `EP ${media.nextAiringEpisode.episode} airing in ${Math.floor((media.nextAiringEpisode.timeUntilAiring)/86400)} days` : 
-            `${media.season} ${media.seasonYear}`
+            `${media.season ? media.season : ''} ${media.seasonYear ? media.seasonYear : ''}`
           }
         </div>
         <div className='score'>{media.averageScore}%</div>
       </div>
-      <div className='studios'>{media.studios ? media.studios.nodes[0].name : null}</div>
+      <div className='studios'>{media.studios && media.studios.nodes.length ? media.studios.nodes[0].name : null}</div>
       <div className='info'>
         <span>{media.format ? getKeyByValue(formatQueries, media.format) : null}</span>
         {media.episodes ? <><span>-</span><span>{media.episodes}</span></>: null}
