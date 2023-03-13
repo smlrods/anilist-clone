@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom'
 
 function Landing (): JSX.Element {
   return (
-    <div>
+    <div className='landing'>
       <div>
         <h1>The next-generation anime platform</h1>
         <h2>Track, share, and discover your favorite anime and manga with AniList.</h2>
       </div>
       <FeaturesCards />
-      <Link to='/signup'>
-        <button>Join now</button>
+      <Link className='join-btn' to='/signup'>
+        <div>
+          <div className='label'>Join now</div>
+          <div className='square'>&gt;</div>
+        </div>
       </Link>
     </div>
   )

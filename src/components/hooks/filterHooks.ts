@@ -78,7 +78,7 @@ function useGetSearchMultiParams(title: string, setFilter: React.Dispatch<React.
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const searchCurrent: string[] = params.getAll(title.toLowerCase());
-    if(searchCurrent) {
+    if(searchCurrent && searchCurrent.length) {
       if (filterQueries) {
         const filterQuery: string[] = []
 

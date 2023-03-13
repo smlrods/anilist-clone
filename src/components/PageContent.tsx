@@ -6,7 +6,7 @@ import { allTimePopularQuery, filterQuery, popularThisSeasonQuery, top100Query, 
 
 function Home(): JSX.Element {
   return (
-    <div>
+    <div className='wrap'>
       <Landing />
       <Search query={trendingQuery}/> 
     </div>
@@ -47,12 +47,12 @@ function Signup(): JSX.Element {
 
 function PageContent (): JSX.Element {
   return (
-    <div>
+    <div className='page-content'>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/search/anime' element={<Search query={filterQuery} />} />
           <Route path='/search/anime/trending' element={<Search title='Trending Anime' query={trendingQuery}/>} />
-          <Route path='/search/anime/top-100' element={<Search title='Top 100 Anime' query={top100Query}/>} />
+          <Route path='/search/anime/top-100' element={<Search hasRank={true} title='Top 100 Anime' query={top100Query}/>} />
           <Route path='/search/anime/top-movies' element={<Search title='Top Anime Movies' query={trendingQuery}/>} />
           <Route path='/search/anime/this-season' element={<Search title='Winter 2023 Anime' query={popularThisSeasonQuery}/>} />
           <Route path='/search/anime/next-season' element={<Search title='Anime Next Season - Airing Spring 2023' query={upcomingNexTSeasonListQuery}/>} />

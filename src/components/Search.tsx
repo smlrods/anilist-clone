@@ -6,8 +6,9 @@ import Results from './Results';
 import { airingStatusQueries, countryOrOriginQueries, formatQueries, genresData, seasonsQueries, sourceMaterialQueries, streamingOnData, streamingOnQueries } from '../data/data';
 import { getKeyByValue } from '../data/utils';
 import { filterQuery } from '../data/api/queries';
+import { FaTags } from 'react-icons/fa';
 
-function Search ({title, query}: {title?: string, query: any}): JSX.Element {
+function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?: boolean}): JSX.Element {
   const [search, setSearch] = useState<string>();
   const [genres, setGenres] = useState<string[]>();
   const [tags, setTags] = useState<string[]>();
@@ -115,49 +116,56 @@ function Search ({title, query}: {title?: string, query: any}): JSX.Element {
   }, [location])
 
   return (
-    <div>
-      {title ? <h1>{title}</h1> : null}
-      <Filters 
-        setSearch={setSearch}
-        setGenres={setGenresAndTags}
-        setYear={setYear}
-        setSeason={setSeason}
-        setFormats={setFormat}
-        setAiringStatus={setAiringStatus}
-        setStreamingOn={setStreamingOn}
-        setCountryOfOrigin={setCountryOfOrigin}
-        setSourceMaterial={setSourceMaterial}
-        search={search}
-        genres={genresAndTags}
-        year={year}
-        season={season}
-        formats={format}
-        airingStatus={airingStatus}
-        streamingOn={streamingOn}
-        countryOfOrigin={countryOfOrigin}
-        sourceMaterial={sourceMaterial}
+    <div className='search'>
+      <div className='container'>
+        {title ? 
+          <h1 className='alias-title'>{title}</h1>
+        : null}
+        <Filters 
+          setSearch={setSearch}
+          setGenres={setGenresAndTags}
+          setYear={setYear}
+          setSeason={setSeason}
+          setFormats={setFormat}
+          setAiringStatus={setAiringStatus}
+          setStreamingOn={setStreamingOn}
+          setCountryOfOrigin={setCountryOfOrigin}
+          setSourceMaterial={setSourceMaterial}
+          search={search}
+          genres={genresAndTags}
+          year={year}
+          season={season}
+          formats={format}
+          airingStatus={airingStatus}
+          streamingOn={streamingOn}
+          countryOfOrigin={countryOfOrigin}
+          sourceMaterial={sourceMaterial}
+          />
+        <FiltersActive 
+          setSearch={setSearch}
+          setGenres={setGenresAndTags}
+          setYear={setYear}
+          setSeason={setSeason}
+          setFormats={setFormat}
+          setAiringStatus={setAiringStatus}
+          setStreamingOn={setStreamingOn}
+          setCountryOfOrigin={setCountryOfOrigin}
+          setSourceMaterial={setSourceMaterial}
+          search={search}
+          genres={genresAndTags}
+          year={year}
+          season={season}
+          formats={format}
+          airingStatus={airingStatus}
+          streamingOn={streamingOn}
+          countryOfOrigin={countryOfOrigin}
+          sourceMaterial={sourceMaterial}
         />
-      <FiltersActive 
-        setSearch={setSearch}
-        setGenres={setGenresAndTags}
-        setYear={setYear}
-        setSeason={setSeason}
-        setFormats={setFormat}
-        setAiringStatus={setAiringStatus}
-        setStreamingOn={setStreamingOn}
-        setCountryOfOrigin={setCountryOfOrigin}
-        setSourceMaterial={setSourceMaterial}
-        search={search}
-        genres={genresAndTags}
-        year={year}
-        season={season}
-        formats={format}
-        airingStatus={airingStatus}
-        streamingOn={streamingOn}
-        countryOfOrigin={countryOfOrigin}
-        sourceMaterial={sourceMaterial}
-      />
-      {showResults || title ? <Results query={queryFilter ? queryFilter : query} /> : <SearchLanding />}
+        {
+          showResults || title ? 
+          <Results layoutSelect={1} amount={20} hasRank={hasRank} query={queryFilter ? queryFilter : query} /> :
+          <SearchLanding />}
+      </div>
     </div>
   );
 }
@@ -170,16 +178,16 @@ function FiterActiveMultiElement({filters, setFilters, filter}: {
   const [showCloseBtn, setShowCloseBtn] = useState(false);
 
   return (
-    <div
+    <div className='filter'
       onClick={() => {
-        if (filters) {
+        if (filters && filters.length) {
           setFilters(filters.filter(element => element != filter))
         }
       }}
       onMouseOver={() => setShowCloseBtn(true)}
       onMouseLeave={() => setShowCloseBtn(false)}>
-      {filter}
-      {showCloseBtn ? <div>X</div> : null}
+      <span className='label'>{filter}</span>
+      {showCloseBtn ? <div className='icon'>x</div> : null}
     </div>
   );
 }
@@ -191,12 +199,12 @@ function FilterActiveMulti({filters, setFilters}:
   }) {
 
   return (
-    <div>
+    <>
       {filters && filters.length ?
         filters.map((filter: string) => {
           return <FiterActiveMultiElement key={`filteractive-${filter}`} filters={filters} filter={filter} setFilters={setFilters}/>
         }): null}
-    </div>
+    </>
   );
 }
 
@@ -210,17 +218,17 @@ function FilterActive({filter, setFilter, title}:
   const [showCloseBtn, setShowCloseBtn] = useState(false);
 
   return (
-    <div>
+    <>
       {filter ? 
-        <div key={filter}
+        <div className='filter' key={filter}
           onClick={() => setFilter(undefined)}
           onMouseOver={() => setShowCloseBtn(true)}
           onMouseLeave={() => setShowCloseBtn(false)}>
-          {title ? title + ': ' + filter: filter}
-          {showCloseBtn ? <div>X</div> : null}
+          {title ? <span className='label'>{title + ': ' + filter}</span>: <span className='label'>{filter}</span>}
+          {showCloseBtn ? <div className='icon'>x</div> : null}
         </div>
         : null}
-    </div>
+    </>
   );
 }
 
@@ -245,7 +253,6 @@ type FiltersActiveProps = {
   sourceMaterial?: string | undefined;
 }
 
-
 function FiltersActive({
   setSearch,
   setGenres,
@@ -267,6 +274,7 @@ function FiltersActive({
   sourceMaterial}: FiltersActiveProps) {
   const [showClearAll, setShowClearAll] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showActives, setShowActives] = useState(false);
 
   const clearAll = () => {
     setSearch(undefined);
@@ -281,11 +289,35 @@ function FiltersActive({
     setSearchParams({});
   }
 
+  useEffect(() => {
+    if(!(genres && genres.length)) {
+      setGenres(undefined);
+    }
+  }, [genres]);
+
+  useEffect(() => {
+    if (
+      search || 
+      genres && genres.length || 
+      year || 
+      season || 
+      formats ||
+      airingStatus || 
+      streamingOn || 
+      countryOfOrigin ||
+      sourceMaterial) {
+      setShowActives(true);
+    } else {
+     setShowActives(false);
+    }
+  }, [search, genres, year, season, formats, airingStatus, streamingOn, countryOfOrigin, sourceMaterial]);
+
   return (
-    <div onMouseOver={() => setShowClearAll(true)} onMouseLeave={() => setShowClearAll(false)}>
-      <div>Icon</div>
-      <div>
-        {showClearAll ? <div onClick={clearAll}>Clear All</div> : null}
+    <div className='secondary-filters' onMouseOver={() => setShowClearAll(true)} onMouseLeave={() => setShowClearAll(false)}>
+      <div className='active-filters'>
+      {showActives ?
+        <>
+        <FaTags className='tags-icon'/>
         <FilterActive filter={search} setFilter={setSearch} title='Search' />
         <FilterActiveMulti filters={genres} setFilters={setGenres}/>
         <FilterActive filter={year} setFilter={setYear} />
@@ -295,6 +327,13 @@ function FiltersActive({
         <FilterActiveMulti filters={streamingOn} setFilters={setStreamingOn}/>
         <FilterActive filter={countryOfOrigin} setFilter={setCountryOfOrigin} />
         <FilterActive filter={sourceMaterial} setFilter={setSourceMaterial} />
+        {showClearAll ? 
+          <div className='filter' onClick={clearAll}>
+            <span className='label'>Clear All</span>
+            <div className='icon'>x</div>
+          </div> : null}
+        </>
+      : null}
       </div>
     </div>
   );

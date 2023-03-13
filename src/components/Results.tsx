@@ -1,7 +1,28 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import getData from "../data/api/getData";
-import { formatQueries } from '../data/data'
-import { getKeyByValue } from '../data/utils'
+import { airingStatusQueries, formatQueries, seasonsQueries } from '../data/data'
+import { emojiColor, getKeyByValue, toHoursAndMinutes } from '../data/utils'
+
+import { FaRegSmile, FaRegMeh, FaRegFrown } from "react-icons/fa"; 
+/*
+  percentage > 75% -> FaRegSmile
+  60% < percentage < 75% -> FaRegMeh 
+  percentage < 60% -> FaRegFrown 
+*/
+
+
+function getEmojiByPercentage(percentage: number): JSX.Element | undefined {
+  if (percentage >= 75) {
+    return <FaRegSmile color={emojiColor(percentage)} className="icon svg-inline--fa fa-w-16" />;
+  } else if (percentage < 75 && percentage > 60) {
+    return <FaRegMeh color={emojiColor(percentage)} className="icon svg-inline--fa fa-w-16" />;
+  } else if (percentage < 50) {
+    return <FaRegFrown color={emojiColor(percentage)} className="icon svg-inline--fa fa-w-16" />;
+  } else {
+    return undefined;
+  }
+}
 
 type Data = {
   title: {
@@ -10,10 +31,17 @@ type Data = {
     native: string | null;
   };
   coverImage: {
-    medium: string;
+    extraLarge?: string;
+    large?: string;
+    medium?: string;
+    color?: string;
   };
+  description: string;
+  status: string;
   averageScore: number | null;
   genres: Array<string> | null;
+  popularity: number | null;
+  duration: number | null;
   episodes: number | null;
   studios: {
     nodes: Array<{name: string}>;
@@ -27,60 +55,310 @@ type Data = {
   seasonYear: number;
 }
 
-function Results({query}: {query: any}) {
+function Results({query, amount, layoutSelect, hasRank}: {query: any, amount: number, layoutSelect: number, hasRank?: boolean}) {
   const [data, setData] = useState<Data[]>();
+
   useEffect(() => {
-    getData(query.query, {...query.variables, page: 1, perPage: 6}).then((data) => {
+    getData(query.query, {...query.variables, page: 1, perPage: amount}).then((data) => {
+      console.log(data);
+      console.log(query);
       setData(data.data.Page.media);
     });
   }, [query]);
 
-  return (
-    <div>
-      {data ?
-      data.map((media): JSX.Element => {
-        return (
-          <MediaCard key={media.title.romaji} media={media}/>
-        )
-      }) : <div>Loading</div>
-      }
-    </div>
-  );
+  switch(layoutSelect) {
+    case 0:
+      return (
+        <div className="results">
+          {data ?
+          data.map((media, index): JSX.Element => {
+            return (
+              <MediaCard orientation={!((index + 1) % 6) ? 'left' : 'right'} key={media.title.romaji} media={media}/>
+            )
+          }) : 
+          Array(amount).fill(undefined).map((media, index) => {
+            return (
+              <MediaCard key={`media-${index}`} orientation={'left'} media={media} />
+              )
+          })
+          }
+        </div>
+      );
+    case 1:
+      return (
+        <div className="results chart">
+          {data ?
+          data.map((media, index):JSX.Element => {
+            return (
+              <MediaCardChart key={`media-${media.title.romaji}`} media={media}/>
+            );
+          }) : 
+          Array(amount).fill(undefined).map((media, index) => {
+            return (
+              <MediaCardChart key={`media-${index}`} media={media}/>
+            );
+          })
+          }
+        </div>
+      );
+    case 2:
+      return (
+        <div className="results tableLayout">
+          {data ?
+          data.map((media, index):JSX.Element => {
+            if (hasRank) {
+              return <MediaCardTable key={`media-${media.title.romaji}`} rank={index + 1} media={media}/>
+            }
+            return <MediaCardTable key={`media-${media.title.romaji}`} media={media}/>
+          }) : 
+          Array(amount).fill(undefined).map((media, index) => {
+            if (hasRank) {
+              return <MediaCardTable key={`media-${index}`} rank={index + 1} media={media}/>
+            }
+            return <MediaCardTable key={`media-${index}`} media={media}/>
+          })
+          }
+        </div>
+      );
+    default:
+      return (
+        <div>Error</div>
+      );
+  }
 }
 
-function MediaCard({media}: {media: Data}) {
-  const [showInfo, setShowInfo] = useState(false);
+function MediaCardChart({media}: {media: Data | undefined}) {
+  const [isHover, setIsHover] = useState(false);
+
   return (
-    <div>
-      <div onMouseOver={() => setShowInfo(true)} onMouseLeave={() => setShowInfo(false)}>
-        <img src={media.coverImage.medium} />
-        <p>{media.title.romaji}</p>
+    <div className="media-card">
+      <div className="cover">
+        <Link className="image-link" to={'#'}>
+          {media && media.coverImage ?
+            <img className="image loaded" src={media.coverImage.extraLarge} />
+          : null
+          }
+        </Link>
+        {media? 
+        <div className="overlay">
+          {media && media.title ?
+            <Link className="title" to={'#'}>{media.title.romaji}</Link> : null
+          }
+          {media && media.studios ?
+            <div className="studio" style={{color: `${media.coverImage.color ? media.coverImage.color : 'black'}`}}>
+            <Link to={'#'}>{media.studios && media.studios.nodes.length ? media.studios.nodes[0].name : null}</Link>
+            </div> : null
+          }
+        </div>
+        : null
+        }
       </div>
-      {showInfo ? <HoverCard media={media} /> : null}
+      <div className="data">
+        <div className="body" onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+          <div className={`scroll-wrap ${isHover ? 'ps-container active ps ps--active-y': ''}`}>
+            <div className={`header ${media ? '' : 'nodata'}`}>
+              <div>
+                {media && media.nextAiringEpisode
+                ?
+                <div className="date airing">
+                  <div className="episode">
+                    {media && media.nextAiringEpisode.episode} airing in
+                  </div>
+                  <div className="countdown">
+                    {`${Math.floor((media.nextAiringEpisode.timeUntilAiring)/86400)} days, ${Math.floor(((media.nextAiringEpisode.timeUntilAiring) % 86400) / 3600)} hours`} 
+                  </div>
+                </div>
+                :
+                <div className="date">
+                  {media ? media.season ? `${getKeyByValue(seasonsQueries,media.season)} ${media.seasonYear}` : "TBA" : null}
+                </div> }
+                <div className="typings">
+                  { media ?
+                  <span>{getKeyByValue(formatQueries, media.format)}</span>
+                  : null }
+                  { media && media.episodes ?
+                  media.episodes === 1 
+                  ?
+                  media.duration ? 
+                  <>
+                    <span> • </span>
+                    <span>{toHoursAndMinutes(media.duration)}</span>
+                  </> 
+                  : null
+                  :
+                  <>
+                    <span> • </span>
+                    <span>{media.episodes ? `${media.episodes} episodes` : null}</span>
+                  </>
+                  : null}
+                </div>
+              </div>
+              <div>
+                <div className="score">
+                  {media && media.averageScore ?  
+                  <>
+                  {getEmojiByPercentage(media.averageScore)}
+                  <span className="percentage">
+                    {media.averageScore}%
+                  </span>
+                  </>
+                  : null }
+                </div>
+              </div>
+            </div>
+            <div className={`description ${media ? '' : 'nodata'}`}>
+              {media && media.description ? (new DOMParser).parseFromString(media.description, 'text/html').body.textContent : null }
+            </div>
+          </div>
+        </div>
+        <div className="footerCard">
+          <div className="genres">
+            {media && media.genres ? 
+              media.genres.slice(0,3).map((genre) => {
+                return <div className="genre border border-black" style={{background: `${media.coverImage.color ? media.coverImage.color : 'white'}`}} key={`genre-${genre}`}>{genre}</div>
+              }) : null
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MediaCardTable({media, rank}: {media: Data | undefined, rank?: number}) {
+  const [hasRank, sethasRank] = useState((rank ? true : false));
+  const [isHover, setIsHover] = useState(false);
+  return (
+    <div className={`media-card ${hasRank ? 'has-rank' : ''}`}>
+      {hasRank ?
+        <div className="rank circle">
+          <span className="hash">#</span>
+          {rank}
+        </div>
+      : null}
+      <Link className="cover" to={'#'}>
+        {media ? 
+          <img className="" src={media.coverImage.large}/>
+        : null}
+      </Link>
+      <div className="content">
+        <div className={`row title ${media ? '' : 'nodata'}`}>
+          {media ? 
+            <Link style={{color: `${isHover ? media.coverImage.color : 'black'}`}} to={'#'} onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+              <div className="title-wrap">{media.title.romaji}</div>
+
+            </Link>
+            : null
+          }
+          {media && media.genres ?
+            <div className="genres">
+              {media.genres.map((genre) => {
+                return <div className='genre' style={{background: `${media.coverImage.color}`}} key={`hovercard-${genre}`}>{genre}</div>
+              })}
+            </div>
+            : null
+          }
+        </div>
+        <div className={`row score ${media ? '' : 'nodata'}`}>
+            {media && media.averageScore ? 
+              <>
+                {getEmojiByPercentage(media.averageScore)}
+                <div className="percentage">
+                  {`${media.averageScore}%`}
+                  <div className="sub-row popularity">
+                    {media.popularity} users
+                  </div>
+                </div>
+              </>
+              : null
+            }
+        </div>
+        {media && media.format ? 
+          <div className="row format">
+            {getKeyByValue(formatQueries, media.format)}
+            {media.episodes === 1 ? 
+              <div className="sub-row length">{media.duration ? toHoursAndMinutes(media.duration) : null}</div> :
+              <div className="sub-row">{media.episodes} episodes</div>
+            }
+          </div>
+          : null
+        }
+        <div className="row date">
+          {media && media.nextAiringEpisode ? 
+            <>
+              {`${media.seasonYear !== new Date().getFullYear() ? `Airing Since ${media.seasonYear}` : 'Airing'}`}
+              <div className="sub-row status">
+                {`EP ${media.nextAiringEpisode.episode} airing in ${Math.floor((media.nextAiringEpisode.timeUntilAiring)/86400)} days`} 
+              </div>
+            </>
+          :
+            <>
+              {media ?
+                <>
+                  {media.season ? `${getKeyByValue(seasonsQueries,media.season)} ${media.seasonYear}` : "TBA"}
+                  <div className="sub-row status">{getKeyByValue(airingStatusQueries, media.status)}</div>
+                </> 
+                : null
+              }
+            </>
+          }
+        </div>
+      </div>
     </div>
   );
 }
 
-function HoverCard({media}: {media: Data}) {
+function MediaCard({media, orientation}: {media: Data, orientation: string}) {
+  const [showInfo, setShowInfo] = useState(false);
+  const [isHover, setIsHover] = useState(false);
+
   return (
-    <div>
-      <div className='head'>
-        <div className='date'>
+    <div className="media-card" onMouseOver={() => {
+        setShowInfo(true);
+        setIsHover(true);
+      }} onMouseLeave={() => {
+        setShowInfo(false);
+        setIsHover(false);
+        }}>
+      <Link className="cover" to={'#'}>
+        {media ?
+          <img className="image loaded" src={media.coverImage.large ? media.coverImage.large : ''} />
+        : null}
+      </Link>
+      <Link to={'#'} className='title' style={{color: `${isHover && media ? media.coverImage.color : 'black'}`}}>
+        {media ? 
+        media.title.romaji: <div className="name-loading"></div>}
+      </Link>
+      {showInfo && media ? <HoverCard orientation={orientation} media={media} /> : null}
+    </div>
+  );
+}
+
+function HoverCard({media, orientation}: {media: Data, orientation: string}) {
+  return (
+    <div className={`hover-data ${orientation}`} style={{borderColor: `${media.coverImage.color}`}}>
+      <div className='header'>
+        <div className='date airing'>
           {media.nextAiringEpisode ?
             `EP ${media.nextAiringEpisode.episode} airing in ${Math.floor((media.nextAiringEpisode.timeUntilAiring)/86400)} days` : 
             `${media.season ? media.season : ''} ${media.seasonYear ? media.seasonYear : ''}`
           }
         </div>
-        <div className='score'>{media.averageScore}%</div>
+        {media.averageScore ?
+        <div className='score'>
+          {getEmojiByPercentage(media.averageScore)}
+          <span className="percentage">{`${media.averageScore}%`}</span> 
+        </div>
+        : null }
       </div>
       <div className='studios'>{media.studios && media.studios.nodes.length ? media.studios.nodes[0].name : null}</div>
       <div className='info'>
         <span>{media.format ? getKeyByValue(formatQueries, media.format) : null}</span>
-        {media.episodes ? <><span>-</span><span>{media.episodes}</span></>: null}
+        {media.episodes ? <><span> • </span><span>{media.episodes} episodes</span></>: null}
       </div>
       <div className='genres'>
         {media.genres ? media.genres.slice(0, 3).map((genre) => {
-          return <div key={`hovercard-${genre}`}>{genre}</div>
+          return <div className='genre' style={{background: `${media.coverImage.color}`}} key={`hovercard-${genre}`}>{genre}</div>
         }) : null}
       </div>
     </div>

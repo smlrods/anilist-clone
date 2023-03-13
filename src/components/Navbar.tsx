@@ -1,40 +1,51 @@
 import React, { useState } from 'react'
+import { FaBookOpen, FaPlay, FaStar, FaThumbsUp, FaUserAstronaut, FaUserTie } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 function SearchDropdown(): JSX.Element {
   return (
-    <div>
-      <div>
-        <div>
-          <Link to='/search/anime'>Icon</Link>
+    <div className='search-dropdown'>
+      <div className='primary-links'>
+        <div className='primary-link'>
+          <Link className='icon' to='/search/anime'>
+            <FaPlay />
+          </Link>
+          <section>
+            <Link className='primary-link-text' to='/search/anime'>Anime</Link>
+            <div className='secondary-links'>
+              <Link to='/search/anime/top-100'>Top 100</Link>
+              <Link to='/search/anime/trending'>Trending</Link>
+              <Link to='/search/anime/top-movies'>Top Movies</Link>
+            </div>
+          </section>
         </div>
-        <div>
-          <Link to='/search/anime'>Anime</Link>
-          <div>
-            <Link to='/search/anime/top-100'>Top 100</Link>
-            <Link to='/search/anime/trending'>Trending</Link>
-            <Link to='/search/anime/top-movies'>Top Movies</Link>
-          </div>
+        <div className='primary-link'>
+          <Link className='icon' to='/search/manga'>
+            <FaBookOpen />
+          </Link>
+          <section>
+            <Link className='primary-link-text' to='/search/manga'>Manga</Link>
+            <div className='secondary-links'>
+              <Link to='/search/manga/top-100'>Top 100</Link>
+              <Link to='/search/manga/trending'>Trending</Link>
+              <Link to='/search/manga/top-movies'>Top Movies</Link>
+            </div>
+          </section>
         </div>
       </div>
-      <div>
-        <div>
-          <Link to='/search/manga'>Icon</Link>
-        </div>
-        <div>
-          <Link to='/search/manga'>Manga</Link>
-          <div>
-            <Link to='/search/manga/top-100'>Top 100</Link>
-            <Link to='/search/manga/trending'>Trending</Link>
-            <Link to='/search/manga/top-movies'>Top Movies</Link>
-          </div>
-        </div>
-      </div>
-      <div>
-        <Link to='/search/staff'>Staff</Link>
-        <Link to='/search/characters'>Characters</Link>
-        <Link to='/search/reviews'>Reviews</Link>
-        <Link to='/recomendations'>Recomendations</Link>
+      <div className='footer'>
+        <Link to='/search/staff'>
+         <FaUserTie />
+        Staff</Link>
+        <Link to='/search/characters'>
+          <FaUserAstronaut />
+        Characters</Link>
+        <Link to='/search/reviews'>
+         <FaStar />
+        Reviews</Link>
+        <Link to='/recomendations'>
+          <FaThumbsUp />
+        Recomendations</Link>
       </div>
     </div>
   );
@@ -43,17 +54,21 @@ function SearchDropdown(): JSX.Element {
 function Navbar (): JSX.Element {
   const [toggleDropdown, setToggleDropwn] = useState(false);
   return (
-    <div>
-      <Link to="/">Logo</Link>
+    <div className='navbar'>
+      <Link to="/">Anilist Clone</Link>
       <div>
-        <div onMouseOver={() => setToggleDropwn(true)} onMouseLeave={() => setToggleDropwn(false)}>
-          <Link to="/search/anime" >Search</Link>
-          {toggleDropdown ? <SearchDropdown /> : null}
+        <div>
+          <div onMouseOver={() => setToggleDropwn(true)} onMouseLeave={() => setToggleDropwn(false)}>
+            <Link to="/search/anime" >Search</Link>
+            {toggleDropdown ? <SearchDropdown /> : null}
+          </div>
+          <Link to="/social">Social</Link>
+          <Link to="/forum">Forum</Link>
         </div>
-        <Link to="/social">Social</Link>
-        <Link to="/forum">Forum</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Sign Up</Link>
+        <div>
+          <Link to="/login">Login</Link>
+          <Link className='signup' to="/signup">Sign Up</Link>
+        </div>
       </div>
     </div>
   )

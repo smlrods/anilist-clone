@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { genresData, yearsData, seasonsData, formatsData, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData, formatQueries, seasonsQueries, yearsQueries, airingStatusQueries, streamingOnQueries, countryOrOriginQueries, sourceMaterialQueries } from '../data/data';
 import { useGetSearchMultiParams, useGetSearchParams, useUpdateSearchMultiParams, useUpdateSearchParams, useOutsideAlerter } from './hooks/filterHooks';
+import { FaSistrix, FaCheckSquare, FaAngleDown, FaSlidersH } from 'react-icons/fa';
 
 type FiltersProps = {
   setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -43,7 +44,7 @@ function Filters({
   streamingOn,
   countryOfOrigin,
   sourceMaterial
-  }: FiltersProps): JSX.Element {
+}: FiltersProps): JSX.Element {
 
   const [showMore, setShowMore] = useState(false);
   const wrapperRef = useRef(null);
@@ -70,21 +71,21 @@ function Filters({
   useUpdateSearchParams('Source Material', sourceMaterial, sourceMaterialQueries);
 
   return (
-    <div>
-      <div>
+    <div className='filters-wrap primary-filters'>
+      <div className='filters'>
         <FilterSearch setSearch={setSearch} search={search} />
-        <FilterMulti  title='Genres' setFilter={setGenres} filter={genres} filterData={genresData}/>
-        <Filter  title='Year' setFilter={setYear} filter={year} filterData={yearsData}/>
-        <Filter  title='Season' setFilter={setSeason} filter={season} filterData={seasonsData}/>
-        <FilterMulti  title='Format' setFilter={setFormats} filter={formats} filterData={formatsData}/>
-        <Filter  title='Airing Status' setFilter={setAiringStatus} filter={airingStatus} filterData={airingStatusData}/>
+        <FilterMulti title='Genres' setFilter={setGenres} filter={genres} filterData={genresData} />
+        <Filter title='Year' setFilter={setYear} filter={year} filterData={yearsData} />
+        <Filter title='Season' setFilter={setSeason} filter={season} filterData={seasonsData} />
+        <FilterMulti title='Format' setFilter={setFormats} filter={formats} filterData={formatsData} />
+        <Filter title='Airing Status' setFilter={setAiringStatus} filter={airingStatus} filterData={airingStatusData} />
       </div>
-      <div ref={wrapperRef}>
-        <div onMouseUp={() => setShowMore(!showMore)}>
-          <button>Show more filters</button>
+      <div className='extra-filters-wrap' ref={wrapperRef}>
+        <div className='open-btn' onMouseUp={() => setShowMore(!showMore)}>
+          <FaSlidersH />
         </div>
         {showMore ?
-          <MoreFiltersDropdown 
+          <MoreFiltersDropdown
             streamingOn={streamingOn}
             setStreamingOn={setStreamingOn}
             countryOfOrigin={countryOfOrigin}
@@ -113,25 +114,25 @@ function MoreFiltersDropdown({
   setSourceMaterial: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) {
   return (
-    <div>
-      <div>
-        <FilterMulti  title='Streaming On' setFilter={setStreamingOn} filter={streamingOn} filterData={streamingOnData}/>
-        <Filter  title='Country Of Origin' setFilter={setCountryOfOrigin} filter={countryOfOrigin} filterData={countryOfOriginData}/>
-        <Filter  title='Source Material' setFilter={setSourceMaterial} filter={sourceMaterial} filterData={sourceMaterialData}/>
+    <div className='dropdown anime'>
+      <div className='filters-wrap'>
+        <FilterMulti title='Streaming On' setFilter={setStreamingOn} filter={streamingOn} filterData={streamingOnData} />
+        <Filter title='Country Of Origin' setFilter={setCountryOfOrigin} filter={countryOfOrigin} filterData={countryOfOriginData} />
+        <Filter title='Source Material' setFilter={setSourceMaterial} filter={sourceMaterial} filterData={sourceMaterialData} />
       </div>
     </div>
   );
 }
 
-function ClearInputIcon({set}: {set:React.Dispatch<React.SetStateAction<any>>}) {
+function ClearInputIcon({ set }: { set: React.Dispatch<React.SetStateAction<any>> }) {
   return (
-    <div onClick={() => set(undefined)}>
+    <div className='clearFilterBtn' onClick={() => set(undefined)}>
       X
     </div>
   );
 }
 
-function FilterSearch({setSearch, search}: {
+function FilterSearch({ setSearch, search }: {
   setSearch: React.Dispatch<React.SetStateAction<string | undefined>>;
   search: string | undefined;
 }) {
@@ -142,7 +143,7 @@ function FilterSearch({setSearch, search}: {
 
   useEffect(() => {
     const name = "search";
-    if(search && search.length) {
+    if (search && search.length) {
       searchParams.set(name, search);
       setSearchParams(searchParams);
     } else {
@@ -154,32 +155,35 @@ function FilterSearch({setSearch, search}: {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const searchCurrent = params.get("search");
-    if(searchCurrent) {
+    if (searchCurrent) {
       setSearch(searchCurrent);
     }
   }, []);
 
   return (
-    <div>
-      <label htmlFor='search'>Search</label>
-      <div>
-        <div>Icon</div>
-        <input type='search' id='search' value={search ? search : ''} onChange={(event) => handleChange(event.target.value)}/>
-        {!search ? null : <ClearInputIcon set={setSearch}/>}
+    <div className='filter filter-select'>
+      <div className='name'>Search</div>
+      <div className='search-wrap'>
+        <div>
+          <FaSistrix />
+        </div>
+        <input autoComplete='off' className='searchInput' type='search' value={search ? search : ''} onChange={(event) => handleChange(event.target.value)} />
+        {!search ? null : <ClearInputIcon set={setSearch} />}
       </div>
     </div>
   )
 }
 
-function FilterDropdown({filterData, setFilter, setSearch, filter, search, setShowSelected}: {
+function FilterDropdown({ filterData, setFilter, setSearch, filter, search, setShowSelected, setToggleDropdown }: {
   filterData: number[] | string[];
   setFilter: React.Dispatch<React.SetStateAction<number | undefined>> | React.Dispatch<React.SetStateAction<string | undefined>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   filter: number | string | undefined;
   search: string;
   setShowSelected: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
-  
+  setToggleDropdown: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+
   const addFilter = (filter: number | string | undefined, filterData: any) => {
     if (filter && filter === filterData) {
       setFilter(undefined);
@@ -191,21 +195,29 @@ function FilterDropdown({filterData, setFilter, setSearch, filter, search, setSh
   }
 
   return (
-    <div>
-      {filterData.map((filterData) => {
-        if (filterData.toString().indexOf(search) !== -1) {
-          return (
-            <div key={filterData} onClick={() => addFilter(filter, filterData)}>
-              <div>{filterData}</div>
-              {filter === filterData ? <div>X</div> : null}
-            </div>);
-        }
-      })}
+    <div className='options' onClick={() => setToggleDropdown(false)}>
+      <div className='ps-container scroll-wrap ps'>
+        <div className='option-group'>
+          {filterData.map((filterData) => {
+            if (filterData.toString().indexOf(search) !== -1) {
+              return (
+                <div className='option' key={filterData} onClick={() => addFilter(filter, filterData)}>
+                  <div className='label'>
+                    <div className='name'>{filterData}</div>
+                    {filter === filterData ? <div>
+                      <FaCheckSquare />
+                    </div> : null}
+                  </div>
+                </div>);
+            }
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
-function Filter({setFilter, filter, filterData, title}: {
+function Filter({ setFilter, filter, filterData, title }: {
   setFilter: React.Dispatch<React.SetStateAction<number | undefined>> | React.Dispatch<React.SetStateAction<string | undefined>>;
   filter: number | string | undefined;
   filterData: number[] | string[];
@@ -214,41 +226,55 @@ function Filter({setFilter, filter, filterData, title}: {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [search, setSearch] = useState('');
   const [showSelected, setShowSelected] = useState(true);
+  const [showPlaceHolder, setShowPlaceHolder] = useState(true);
 
   const ref = useRef(null);
   useOutsideAlerter(ref, setToggleDropdown);
 
   useEffect(() => {
-   setShowSelected(!toggleDropdown);
+    setShowSelected(!toggleDropdown);
   }, [toggleDropdown]);
 
   return (
-    <div>
-      <label>{title}</label>
-      <div ref={ref}>
-        <div>
-          { filter ?
-            showSelected ?
-            <div onClick={() => setToggleDropdown(true)}>{filter}</div>: null :
-            <div onClick={() => setToggleDropdown(true)}>any</div> }
-          <input
-            type='search'
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            onFocus={() => {
-              setToggleDropdown(true)
-              setShowSelected(false)
-              }}/>
+    <div className='filter filter-select'>
+      <div className='name'>{title}</div>
+      <div className='select-wrap' ref={ref}>
+        <div className='select'>
+          <div className='value-wrap'>
+            {filter ?
+              showSelected ?
+                <div className='value' onClick={() => setToggleDropdown(true)}>{filter}</div> : null :
+              showPlaceHolder ?
+                <div className='placeholder' onClick={() => setToggleDropdown(true)}>Any</div> : null}
+            <input
+              className='filter'
+              type='search'
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+              onFocus={() => {
+                setToggleDropdown(true)
+                setShowSelected(false)
+                setShowPlaceHolder(false)
+              }}
+              onBlur={() => {
+                setShowPlaceHolder(true)
+                setShowSelected(true)
+              }}
+            />
+          </div>
           {filter ?
-          <div onClick={() => setFilter(undefined)}>X</div> :
-          <div onClick={() => setToggleDropdown(true)}>V</div>
+            <div onClick={() => setFilter(undefined)}>X</div> :
+            <div onClick={() => setToggleDropdown(true)}>
+              <FaAngleDown />
+            </div>
           }
         </div>
         {toggleDropdown ?
           <FilterDropdown
             setShowSelected={setShowSelected}
+            setToggleDropdown={setToggleDropdown}
             setSearch={setSearch}
             filterData={filterData}
             filter={filter}
@@ -259,21 +285,21 @@ function Filter({setFilter, filter, filterData, title}: {
   )
 }
 
-function FilterMultiDropdown({filterData, setFilter, setSearch, filter, search, setShowSelected}: {
-  filterData: string[] | {[key: string]: string[]};
+function FilterMultiDropdown({ filterData, setFilter, setSearch, filter, search, setShowSelected }: {
+  filterData: string[] | { [key: string]: string[] };
   setFilter: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   filter: string[] | undefined;
   search: string;
   setShowSelected: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
+}) {
 
   useEffect(() => {
     if (!filter) return;
     if (!filter.length) setFilter(undefined);
   }, [filter]);
-  
-  const addFilter = (filter: string[] | undefined, filterData: string ) => {
+
+  const addFilter = (filter: string[] | undefined, filterData: string) => {
     if (filter === undefined) {
       setFilter([filterData]);
       setShowSelected(true);
@@ -288,86 +314,100 @@ function FilterMultiDropdown({filterData, setFilter, setSearch, filter, search, 
   }
 
   return (
-    <div>
-      {Array.isArray(filterData) ?
-      filterData.map((filterData: string) => {
-        if (filterData.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
-          return (
-            <div key={filterData} onClick={() => addFilter(filter, filterData)}>
-              <div>{filterData}</div>
-              {filter && filter.includes(filterData) ? <div>X</div> : null}
-            </div>);
+    <div className='options'>
+      <div className='ps-container scroll-wrap ps'>
+        {Array.isArray(filterData) ?
+          filterData.map((filterData: string) => {
+            if (filterData.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+              return (
+                <div className='option-group' key={filterData} onClick={() => addFilter(filter, filterData)}>
+                  <div className='option'>{filterData}</div>
+                  {filter && filter.includes(filterData) ? <div>X</div> : null}
+                </div>);
+            }
+          }) :
+          Object.keys(filterData).map((key: any) => {
+            return (
+              <div className='option-group' key={key}>
+                <div className='group-title'>{key}</div>
+                {filterData[key].map((dataItem: string) => {
+                  if (dataItem.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+                    return (
+                      <div className='option' key={dataItem} onClick={() => {
+                        addFilter(filter, dataItem)
+                        setSearch('');
+                      }}>
+                        <div className='label'>
+                          <div className='name'>{dataItem}</div>
+                          {filter && filter.includes(dataItem) ? <div className='selected-icon'><FaCheckSquare /></div> : null}
+                        </div>
+                      </div>
+                    )
+                  }
+                })}
+              </div>
+            );
+          })
         }
-      }) : 
-      Object.keys(filterData).map((key: any) => {
-        return (
-          <div key={key}>
-            <h1>{key}</h1>
-            <div>
-              {filterData[key].map((dataItem: string) => {
-                if (dataItem.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
-                  return (
-                    <div key={dataItem} onClick={() => {
-                      addFilter(filter, dataItem)
-                      setSearch('');
-                    }}>
-                      <div>{dataItem}</div>
-                      {filter && filter.includes(dataItem) ? <div>x</div> : null} 
-                    </div>
-                  )
-                }
-              })}
-            </div>
-          </div>
-        );
-      })
-      }
+      </div>
     </div>
   );
 }
 
-function FilterMulti({setFilter, filter, filterData, title}: {
-  setFilter: React.Dispatch<React.SetStateAction<string[]| undefined>>;
+function FilterMulti({ setFilter, filter, filterData, title }: {
+  setFilter: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   filter: string[] | undefined;
-  filterData: string[] | {[key: string]: string[]};
+  filterData: string[] | { [key: string]: string[] };
   title: string;
 }) {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [search, setSearch] = useState('');
   const [showSelected, setShowSelected] = useState(true);
+  const [showPlaceHolder, setShowPlaceHolder] = useState(true);
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, setToggleDropdown);
 
   return (
-    <div>
-      <label>{title}</label>
-      <div ref={wrapperRef}>
-        <div>
-        { filter ?
-          showSelected ?
-            <div>
-              <div onClick={() => setFilter(filter.slice(1))}>{filter[0]}</div>
-              {filter[1] ?
-                <div onClick={() => setToggleDropdown(true)}>+{filter.length - 1}</div> : null
-              }
-            </div> : null : 
-
-            <div onClick={() => setToggleDropdown(true)}>any</div>}
-          <input
-            type='search'
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            onFocus={() => {
-              setToggleDropdown(true)
-              setShowSelected(false)
-              }}/>
+    <div className='filter filter-select'>
+      <div className='name'>{title}</div>
+      <div className='select-wrap' ref={wrapperRef}>
+        <div className='select'>
+          <div className='value-wrap'>
+            {filter && filter.length ?
+              showSelected ?
+                <div className='tags'>
+                  <div className='tag' onClick={() => setFilter(filter.slice(1))}>{filter[0]}</div>
+                  {filter[1] ?
+                    <div className='tag' onClick={() => setToggleDropdown(true)}>+{filter.length - 1}</div> : null
+                  }
+                </div> : null :
+              showPlaceHolder ?
+                <div className='placeholder' onClick={() => setToggleDropdown(true)}>Any</div> : null}
+            <input
+              className='filter'
+              type='search'
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+              onFocus={() => {
+                setToggleDropdown(true)
+                setShowSelected(false)
+                setShowPlaceHolder(false)
+              }}
+              onBlur={() => {
+                setShowSelected(true)
+                setShowPlaceHolder(false)
+                setShowPlaceHolder(true)
+              }}
+            />
+          </div>
           {filter ?
-          <div onClick={() => setFilter(undefined)}>X</div> :
-          <div onClick={() => setToggleDropdown(true)}>V</div>
-          }
+            <div onClick={() => setFilter(undefined)}>X</div> :
+            <div className='icon' onClick={() => setToggleDropdown(true)}>
+              <FaAngleDown />
+            </div>}
         </div>
         {toggleDropdown ?
           <FilterMultiDropdown
