@@ -8,7 +8,7 @@ function Home(): JSX.Element {
   return (
     <div className='wrap'>
       <Landing />
-      <Search query={trendingQuery}/> 
+      <Search query={trendingQuery} /> 
     </div>
   );
 }

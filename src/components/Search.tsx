@@ -3,7 +3,7 @@ import SearchLanding from './SearchLanding'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Results from './Results';
-import { airingStatusQueries, countryOrOriginQueries, formatQueries, genresData, seasonsQueries, sourceMaterialQueries, streamingOnData, streamingOnQueries } from '../data/data';
+import { airingStatusQueries, countryOrOriginQueries, formatQueries, genresData, seasonsQueries, sourceMaterialQueries, streamingOnQueries } from '../data/data';
 import { getKeyByValue } from '../data/utils';
 import { filterQuery } from '../data/api/queries';
 import { FaTags } from 'react-icons/fa';
@@ -163,7 +163,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
         />
         {
           showResults || title ? 
-          <Results layoutSelect={1} amount={20} hasRank={hasRank} query={queryFilter ? queryFilter : query} /> :
+          <Results layoutSelect={0} hasRank={hasRank} query={queryFilter ? queryFilter : query} /> :
           <SearchLanding />}
       </div>
     </div>

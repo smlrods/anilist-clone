@@ -1,7 +1,6 @@
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import PageContent from './components/PageContent'
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
 function App (): JSX.Element {

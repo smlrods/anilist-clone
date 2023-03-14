@@ -5,11 +5,11 @@ import { allTimePopularQuery, popularThisSeasonQuery, top100Query, trendingQuery
 function SearchLanding (): JSX.Element {
   return (
     <div className='search-landing'>
-      <SearchLandingSection layoutSelect={0} amount={6} title="TRENDING NOW" query={trendingQuery} link={'/search/anime/trending'}/>
-      <SearchLandingSection layoutSelect={0} amount={6} title="POPULAR THIS SEASON" query={popularThisSeasonQuery} link={'/search/anime/this-season'}/>
-      <SearchLandingSection layoutSelect={0} amount={6} title="UPCOMING NEXT SEASON" query={upcomingNexTSeasonListQuery} link={'/search/anime/next-season'}/>
-      <SearchLandingSection layoutSelect={0} amount={6} title="ALL TIME POPULAR" query={allTimePopularQuery}  link={'/search/anime/popular'} />
-      <SearchLandingSection layoutSelect={2} hasRank={true} amount={10} title="TOP 100 ANIME" query={top100Query} link={'/search/anime/top-100'}/>
+      <SearchLandingSection layoutSelect={0} title="TRENDING NOW" query={trendingQuery} link={'/search/anime/trending'}/>
+      <SearchLandingSection layoutSelect={0} title="POPULAR THIS SEASON" query={popularThisSeasonQuery} link={'/search/anime/this-season'}/>
+      <SearchLandingSection layoutSelect={0} title="UPCOMING NEXT SEASON" query={upcomingNexTSeasonListQuery} link={'/search/anime/next-season'}/>
+      <SearchLandingSection layoutSelect={0} title="ALL TIME POPULAR" query={allTimePopularQuery}  link={'/search/anime/popular'} />
+      <SearchLandingSection layoutSelect={2} hasRank={true} title="TOP 100 ANIME" query={top100Query} link={'/search/anime/top-100'}/>
     </div>
   )
 }
