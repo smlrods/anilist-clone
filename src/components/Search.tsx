@@ -1,7 +1,7 @@
 import Filters from './Filters'
 import SearchLanding from './SearchLanding'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { redirect, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Results from './Results';
 import { airingStatusQueries, countryOrOriginQueries, formatQueries, genresData, seasonsQueries, sourceMaterialQueries, streamingOnQueries, sortQueries } from '../data/data';
 import { getKeyByValue } from '../data/utils';
@@ -32,6 +32,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
 
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const sortGenresAndTags = () => {
     const genresSorted: string[] = [];
@@ -116,7 +117,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
       setShowResults(false);
     } else {
       setShowResults(true);
-      if (title) navigate('/search/anime', {replace: true});
+      navigate({pathname: '/search/anime', search: searchParams.toString()}); 
       updateQuery();
     }
   }, [location])

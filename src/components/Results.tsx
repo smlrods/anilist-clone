@@ -61,36 +61,36 @@ function Results({query, isLanding, layoutSelect, hasRank}: {query: any, layoutS
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [prevQueryVar, setPrevQueryVar] = useState(query.variables);
   const ref = useRef(null);
 
   useEffect(() => {
-    if (hasNextPage) {
-      getData(
-        query.query, 
-        {
-          ...query.variables,
-          page: page, 
-          perPage: (isLanding ? hasRank ? 10: 6 : 50)
-        }
-      ).then((response) => {
-        const newData = response.data.Page.media;
-        if (data) {
-          setData(prevData => {
-            if (prevData) {
-              return prevData.concat(newData);
-            }
-            return prevData;
-          });
-        } else {
-          setData(newData);
-        }
-        setHasNextPage(response.data.Page.pageInfo.hasNextPage);
-      });
-    }
+    getData(
+      query.query, 
+      {
+        ...query.variables,
+        page: page, 
+        perPage: (isLanding ? hasRank ? 10: 6 : 50)
+      }
+    ).then((response) => {
+      const newData = response.data.Page.media;
+      if (data && hasNextPage && (prevQueryVar === query.variables)) {
+        setData(prevData => {
+          if (prevData) {
+            return prevData.concat(newData);
+          }
+          return prevData;
+        });
+      } else {
+        setData(newData);
+        setPrevQueryVar(newData);
+      }
+      setHasNextPage(response.data.Page.pageInfo.hasNextPage);
+    });
   }, [query, page]);
 
   useEffect(() => {
-    if(!((amountToShow + 10) % 50)) {
+    if(!((amountToShow + 10) % 50) && hasNextPage) {
       setPage((prevPage) => prevPage + 1);
     }
   }, [amountToShow])
