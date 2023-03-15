@@ -126,7 +126,7 @@ function Results({query, isLanding, layoutSelect, hasRank}: {query: any, layoutS
         observer.unobserve(ref.current);
       }
     }
-  }, [data, amountToShow, ref]);
+  }, [data, amountToShow, ref, layoutSelect]);
 
   switch(layoutSelect) {
     case 0:

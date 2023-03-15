@@ -47,12 +47,12 @@ const filterQuery = {
 
 const trendingQuery = {
   query: `
-    query($perPage: Int, $page: Int) {
+    query($perPage: Int, $page: Int, $sort: [MediaSort]) {
       Page(perPage: $perPage, page: $page) {
       pageInfo {
         hasNextPage
       }
-      media(sort: TRENDING_DESC, type: ANIME) {
+      media(sort: $sort, type: ANIME) {
         id
         title {
           romaji
@@ -90,6 +90,7 @@ const trendingQuery = {
   variables: {
     perPage: 10,
     page: 1,
+    sort: ['TRENDING_DESC']
   }
 }
 

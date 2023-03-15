@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { genresData, yearsData, seasonsData, formatsData, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData, formatQueries, seasonsQueries, yearsQueries, airingStatusQueries, streamingOnQueries, countryOrOriginQueries, sourceMaterialQueries } from '../data/data';
+import { genresData, yearsData, seasonsData, formatsData, airingStatusData, streamingOnData, countryOfOriginData, sourceMaterialData, formatQueries, seasonsQueries, yearsQueries, airingStatusQueries, streamingOnQueries, countryOrOriginQueries, sourceMaterialQueries, sortQueries } from '../data/data';
 import { useGetSearchMultiParams, useGetSearchParams, useUpdateSearchMultiParams, useUpdateSearchParams, useOutsideAlerter } from './hooks/filterHooks';
 import { FaSistrix, FaCheckSquare, FaAngleDown, FaSlidersH } from 'react-icons/fa';
 
@@ -14,6 +14,7 @@ type FiltersProps = {
   setStreamingOn: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   setCountryOfOrigin: React.Dispatch<React.SetStateAction<string | undefined>>;
   setSourceMaterial: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSort: React.Dispatch<React.SetStateAction<string | undefined>>;
   search: string | undefined;
   genres: string[] | undefined;
   year: number | undefined;
@@ -23,6 +24,7 @@ type FiltersProps = {
   streamingOn: string[] | undefined;
   countryOfOrigin: string | undefined;
   sourceMaterial: string | undefined;
+  sort: string | undefined;
 };
 
 function Filters({
@@ -35,6 +37,7 @@ function Filters({
   setStreamingOn,
   setCountryOfOrigin,
   setSourceMaterial,
+  setSort,
   search,
   genres,
   year,
@@ -43,7 +46,8 @@ function Filters({
   airingStatus,
   streamingOn,
   countryOfOrigin,
-  sourceMaterial
+  sourceMaterial,
+  sort
 }: FiltersProps): JSX.Element {
 
   const [showMore, setShowMore] = useState(false);
@@ -59,6 +63,7 @@ function Filters({
   useGetSearchMultiParams('Streaming On', setStreamingOn, streamingOnQueries);
   useGetSearchParams('Country Of Origin', setCountryOfOrigin, countryOrOriginQueries);
   useGetSearchParams('Source Material', setSourceMaterial, sourceMaterialQueries);
+  useGetSearchParams('Sort', setSort, sortQueries);
 
   // Update URL Search Params
   useUpdateSearchMultiParams('Genres', genres);
@@ -69,6 +74,7 @@ function Filters({
   useUpdateSearchMultiParams('Streaming On', streamingOn, streamingOnQueries);
   useUpdateSearchParams('Country Of Origin', countryOfOrigin, countryOrOriginQueries);
   useUpdateSearchParams('Source Material', sourceMaterial, sourceMaterialQueries);
+  useUpdateSearchParams('Sort', sort, sortQueries);
 
   return (
     <div className='filters-wrap primary-filters'>

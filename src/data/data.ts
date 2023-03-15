@@ -456,6 +456,20 @@ const airingStatusData = [
   "Cancelled"
 ];
 
+interface SortQueries {
+  [key: string]: string 
+}
+
+const sortQueries: SortQueries = {
+  'title': 'TITLE_ROMAJI',
+  'popularity': 'POPULARITY_DESC',
+  'average score': 'SCORE_DESC',
+  'trending': 'TRENDING_DESC',
+  'favorites': 'FAVOURITES_DESC',
+  'date added': 'ID_DESC',
+  'release date': 'START_DATE_DESC'
+}
+
 interface StreamingOnQueries {
   [key: string]: number 
 }
@@ -783,4 +797,4 @@ const trending = [
         }
 ]
 
-export { trending, genresData, yearsData, yearsQueries, seasonsData, seasonsQueries, formatsData, formatQueries, airingStatusData, airingStatusQueries, streamingOnData, streamingOnQueries, countryOfOriginData, countryOrOriginQueries, sourceMaterialQueries,sourceMaterialData };
+export { trending, genresData, yearsData, yearsQueries, seasonsData, seasonsQueries, formatsData, formatQueries, airingStatusData, airingStatusQueries, streamingOnData, streamingOnQueries, countryOfOriginData, countryOrOriginQueries, sourceMaterialQueries,sourceMaterialData, sortQueries};

@@ -1,12 +1,13 @@
 import Filters from './Filters'
 import SearchLanding from './SearchLanding'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Results from './Results';
-import { airingStatusQueries, countryOrOriginQueries, formatQueries, genresData, seasonsQueries, sourceMaterialQueries, streamingOnQueries } from '../data/data';
+import { airingStatusQueries, countryOrOriginQueries, formatQueries, genresData, seasonsQueries, sourceMaterialQueries, streamingOnQueries, sortQueries } from '../data/data';
 import { getKeyByValue } from '../data/utils';
 import { filterQuery } from '../data/api/queries';
-import { FaTags } from 'react-icons/fa';
+import { FaSort, FaTags, FaTh, FaThLarge, FaThList } from 'react-icons/fa';
+import { useOutsideAlerter } from './hooks/filterHooks';
 
 function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?: boolean}): JSX.Element {
   const [search, setSearch] = useState<string>();
@@ -19,12 +20,15 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
   const [streamingOn, setStreamingOn] = useState<string[]>();
   const [countryOfOrigin, setCountryOfOrigin] = useState<string>();
   const [sourceMaterial, setSourceMaterial] = useState<string>();
+  const [sort, setSort] = useState<string>();
 
   const [genresAndTags, setGenresAndTags] = useState<string[]>();
 
   const [showResults, setShowResults] = useState(false);
 
   const [queryFilter, setQueryFilter] = useState<{[key: string]: any}>();
+
+  const [layout, setLayout] = useState(0);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -71,8 +75,9 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
             ...(format && {format: convertToQuery(format, formatQueries)}),
             ...(airingStatus && {status: airingStatusQueries[airingStatus]}),
             ...(streamingOn && {streamingon: convertToQuery(streamingOn, streamingOnQueries)}),
-            ...(countryOfOrigin && {status: getKeyByValue(countryOrOriginQueries, countryOfOrigin)}),
-            ...(sourceMaterial && {status: getKeyByValue(sourceMaterialQueries, sourceMaterial)}),
+            ...(countryOfOrigin && {countryOfOrigin: countryOrOriginQueries[countryOfOrigin]}),
+            ...(sourceMaterial && {source: sourceMaterialQueries[sourceMaterial]}),
+            ...(sort && {sort: [sortQueries[sort]]})
           }
       }
     );
@@ -107,6 +112,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
       setCountryOfOrigin(undefined);
       setSourceMaterial(undefined);
       setQueryFilter(undefined);
+      setSort(undefined);
       setShowResults(false);
     } else {
       setShowResults(true);
@@ -131,6 +137,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
           setStreamingOn={setStreamingOn}
           setCountryOfOrigin={setCountryOfOrigin}
           setSourceMaterial={setSourceMaterial}
+          setSort={setSort}
           search={search}
           genres={genresAndTags}
           year={year}
@@ -140,6 +147,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
           streamingOn={streamingOn}
           countryOfOrigin={countryOfOrigin}
           sourceMaterial={sourceMaterial}
+          sort={sort}
           />
         <FiltersActive 
           setSearch={setSearch}
@@ -151,6 +159,8 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
           setStreamingOn={setStreamingOn}
           setCountryOfOrigin={setCountryOfOrigin}
           setSourceMaterial={setSourceMaterial}
+          setSort={setSort}
+          setLayout={setLayout}
           search={search}
           genres={genresAndTags}
           year={year}
@@ -160,11 +170,16 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
           streamingOn={streamingOn}
           countryOfOrigin={countryOfOrigin}
           sourceMaterial={sourceMaterial}
+          sort={sort}
+          query={query}
+          isLanding={showResults || title ? false : true}
+          layout={layout}
         />
         {
           showResults || title ? 
-          <Results layoutSelect={0} hasRank={hasRank} query={queryFilter ? queryFilter : query} /> :
-          <SearchLanding />}
+          <Results layoutSelect={layout} hasRank={hasRank} query={queryFilter ? queryFilter : query} /> :
+          <SearchLanding />
+        }
       </div>
     </div>
   );
@@ -242,6 +257,8 @@ type FiltersActiveProps = {
   setStreamingOn: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   setCountryOfOrigin: React.Dispatch<React.SetStateAction<string | undefined>>;
   setSourceMaterial: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSort: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setLayout: React.Dispatch<React.SetStateAction<number>>;
   search?: string | undefined;
   genres?: string[] | undefined;
   year?: number | undefined;
@@ -251,6 +268,10 @@ type FiltersActiveProps = {
   streamingOn?: string[] | undefined;
   countryOfOrigin?: string | undefined;
   sourceMaterial?: string | undefined;
+  sort: string | undefined;
+  query: any;
+  isLanding: boolean;
+  layout: number;
 }
 
 function FiltersActive({
@@ -263,6 +284,8 @@ function FiltersActive({
   setStreamingOn,
   setCountryOfOrigin,
   setSourceMaterial,
+  setLayout,
+  setSort,
   search,
   genres,
   year,
@@ -271,10 +294,19 @@ function FiltersActive({
   airingStatus, 
   streamingOn, 
   countryOfOrigin, 
-  sourceMaterial}: FiltersActiveProps) {
+  sourceMaterial,
+  sort,
+  query,
+  isLanding,
+  layout
+  }: FiltersActiveProps) {
   const [showClearAll, setShowClearAll] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [showActives, setShowActives] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, setShowSortDropdown);
 
   const clearAll = () => {
     setSearch(undefined);
@@ -286,6 +318,7 @@ function FiltersActive({
     setStreamingOn(undefined);
     setCountryOfOrigin(undefined);
     setSourceMaterial(undefined);
+    setSort(undefined);
     setSearchParams({});
   }
 
@@ -335,6 +368,50 @@ function FiltersActive({
         </>
       : null}
       </div>
+      <div className='selects-wrap'>
+      { isLanding ? null :
+        <>
+        <div className='sort-wrap sort-select' ref={wrapperRef}>
+          <FaSort className='icon svg-inline--fa fa-w-10' />
+          <span className='label' onClick={() => setShowSortDropdown(!showSortDropdown)}>{sort ? sort : getKeyByValue(sortQueries, query.variables.sort[0])}</span>
+          {showSortDropdown ? <DropdownSort setShowSortDropdown={setShowSortDropdown} setSort={setSort} /> : null}
+        </div>
+        <div className='wrap'>
+          <div className={`icon-wrap ${layout === 0 ? 'active' : ''}`} onClick={() => setLayout(0)}>
+            <FaTh />
+          </div>
+          <div className={`icon-wrap ${layout === 1 ? 'active' : ''}`} onClick={() => setLayout(1)}>
+            <FaThLarge />
+          </div>
+          <div className={`icon-wrap ${layout === 2 ? 'active' : ''}`} onClick={() => setLayout(2)}>
+            <FaThList />
+          </div>
+        </div>
+        </>
+      }
+      </div>
+  </div>
+  );
+}
+
+type DropdownSortProps = {
+  setSort: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setShowSortDropdown: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function DropdownSort({setSort, setShowSortDropdown}: DropdownSortProps) {
+  return (
+    <div className='dropdown'>
+      {Object.keys(sortQueries).map((sort) => {
+        return (
+          <div className='option' key={`sort-${sort}`} 
+            onClick={() => {
+              setSort(sort)
+              setShowSortDropdown(false);
+            }}
+          >{sort}</div>
+        );
+      })}
     </div>
   );
 }
