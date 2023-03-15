@@ -117,7 +117,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
       setShowResults(false);
     } else {
       setShowResults(true);
-      navigate({pathname: '/search/anime', search: searchParams.toString()}); 
+      if (location.pathname != '/search/anime') navigate({pathname: '/search/anime', search: searchParams.toString()}); 
       updateQuery();
     }
   }, [location])
