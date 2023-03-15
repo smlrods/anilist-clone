@@ -323,15 +323,21 @@ function FilterMultiDropdown({ filterData, setFilter, setSearch, filter, search,
     <div className='options'>
       <div className='ps-container scroll-wrap ps'>
         {Array.isArray(filterData) ?
-          filterData.map((filterData: string) => {
-            if (filterData.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
-              return (
-                <div className='option-group' key={filterData} onClick={() => addFilter(filter, filterData)}>
-                  <div className='option'>{filterData}</div>
-                  {filter && filter.includes(filterData) ? <div>X</div> : null}
-                </div>);
+          <div className='option-group'>
+            {
+              filterData.map((filterData: string) => {
+                if (filterData.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+                  return (
+                    <div className='option' key={filterData} onClick={() => addFilter(filter, filterData)}>
+                      <div className='label'>
+                        <div>{filterData}</div>
+                        {filter && filter.includes(filterData) ? <div className='selected-icon'><FaCheckSquare /></div> : null}
+                      </div>
+                    </div>);
+                }
+              }) 
             }
-          }) :
+          </div> :
           Object.keys(filterData).map((key: any) => {
             return (
               <div className='option-group' key={key}>
