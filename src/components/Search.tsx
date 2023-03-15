@@ -78,7 +78,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
             ...(streamingOn && {streamingon: convertToQuery(streamingOn, streamingOnQueries)}),
             ...(countryOfOrigin && {countryOfOrigin: countryOrOriginQueries[countryOfOrigin]}),
             ...(sourceMaterial && {source: sourceMaterialQueries[sourceMaterial]}),
-            ...(sort && {sort: [sortQueries[sort]]})
+            ...(sort && {sort: sortQueries[sort]}),
           }
       }
     );
@@ -177,7 +177,7 @@ function Search ({title, query, hasRank}: {title?: string, query: any, hasRank?:
           layout={layout}
         />
         {
-          showResults || title ? 
+          showResults || title || location.search ? 
           <Results layoutSelect={layout} hasRank={hasRank} query={queryFilter ? queryFilter : query} /> :
           <SearchLanding />
         }
@@ -374,7 +374,12 @@ function FiltersActive({
         <>
         <div className='sort-wrap sort-select' ref={wrapperRef}>
           <FaSort className='icon svg-inline--fa fa-w-10' />
-          <span className='label' onClick={() => setShowSortDropdown(!showSortDropdown)}>{sort ? sort : getKeyByValue(sortQueries, query.variables.sort[0])}</span>
+          <span className='label' onClick={() => setShowSortDropdown(!showSortDropdown)}>
+            { sort ? 
+              sort : Object.keys(query.variables).length ?
+              getKeyByValue(sortQueries, query.variables.sort[0]) : 'trending'
+            }
+          </span>
           {showSortDropdown ? <DropdownSort setShowSortDropdown={setShowSortDropdown} setSort={setSort} /> : null}
         </div>
         <div className='wrap'>

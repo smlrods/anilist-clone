@@ -61,33 +61,56 @@ function Results({query, isLanding, layoutSelect, hasRank}: {query: any, layoutS
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [prevQueryVar, setPrevQueryVar] = useState(query.variables);
   const ref = useRef(null);
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
+  // New Data
   useEffect(() => {
-    getData(
-      query.query, 
-      {
-        ...query.variables,
-        page: page, 
-        perPage: (isLanding ? hasRank ? 10: 6 : 50)
-      }
-    ).then((response) => {
-      const newData = response.data.Page.media;
-      if (data && hasNextPage && (prevQueryVar === query.variables)) {
+    setData(undefined);
+    setAmountToShow(20);
+    setPage(1);
+    // Check if is queryFilter - variables = {}
+    if (Object.keys(query.variables).length) {
+      if (timer) clearTimeout(timer);
+      setTimer(setTimeout(() => {
+        getData(
+          query.query, 
+          {
+            ...query.variables,
+            perPage: (isLanding ? hasRank ? 10: 6 : 50),
+            sort: query.variables.sort ? query.variables.sort : ['POPULARITY_DESC']
+          }
+        ).then((response) => {
+          const newData = response.data.Page.media;
+          setData(newData);
+          setHasNextPage(response.data.Page.pageInfo.hasNextPage);
+        });
+      }, 1000));
+    }
+  }, [query]);
+
+  // Add data to existed
+  useEffect(() => {
+    if (page != 1) {
+      getData(
+        query.query, 
+        {
+          ...query.variables,
+          page: page, 
+          perPage: (isLanding ? hasRank ? 10: 6 : 50)
+        }
+      ).then((response) => {
+        const newData = response.data.Page.media;
         setData(prevData => {
           if (prevData) {
             return prevData.concat(newData);
           }
           return prevData;
         });
-      } else {
-        setData(newData);
-        setPrevQueryVar(newData);
-      }
-      setHasNextPage(response.data.Page.pageInfo.hasNextPage);
-    });
-  }, [query, page]);
+        setHasNextPage(response.data.Page.pageInfo.hasNextPage);
+      });
+    }
+  }, [page]);
 
   useEffect(() => {
     if(!((amountToShow + 10) % 50) && hasNextPage) {

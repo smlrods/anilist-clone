@@ -40,9 +40,7 @@ const filterQuery = {
         }
       }
     }`,
-  variables: {
-    sort: ["POPULARITY_DESC"]
-  }
+  variables: {}
 } 
 
 const trendingQuery = {
