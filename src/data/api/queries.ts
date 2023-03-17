@@ -289,4 +289,144 @@ const top100Query = {
   }
 }
 
-export { filterQuery, trendingQuery, popularThisSeasonQuery, upcomingNexTSeasonListQuery, allTimePopularQuery, top100Query};
+const mediaPageQuery = {
+  query: `
+    query ($id: Int) {
+      Media(id: $id) {
+        title {
+          romaji
+          english
+          native
+        }
+        coverImage {
+          large
+          color
+        }
+        bannerImage
+        description(asHtml: true)
+        nextAiringEpisode {
+          timeUntilAiring
+          episode
+        }
+        format
+        episodes
+        duration
+        status
+        startDate {
+          year
+          month
+          day
+        }
+        endDate {
+          year
+          month
+          day
+        }
+        season
+        seasonYear
+        averageScore
+        meanScore
+        popularity
+        favourites
+        studios {
+          edges {
+            isMain
+            node {
+              name
+            }
+          }
+        }
+        source
+        hashtag
+        genres
+        synonyms
+        tags {
+          name
+          description
+          rank
+        }
+        externalLinks {
+          site
+          url
+          type
+          language
+          color
+          icon
+        }
+        relations {
+          edges {
+            id
+            relationType(version: 2)
+            node {
+              title {
+                romaji
+              }
+              coverImage {
+                medium
+              }
+              source
+              status
+              format
+            }
+          }
+        }
+        characters(sort: [ROLE, ID]) {
+          edges {
+            id
+            role
+            voiceActors {
+              name {
+                userPreferred
+              }
+              image {
+                large
+              }
+              languageV2
+            }
+            node {
+              name {
+                userPreferred
+              }
+              image {
+                large
+              }
+              
+            }
+          }
+        }
+        staff {
+          edges {
+            id
+            role
+            node {
+              name {
+                userPreferred
+              }
+              image {
+                large
+              }
+            }
+          }
+        }
+        trailer {
+          id
+          site
+        }
+        recommendations(sort: [RATING_DESC]) {
+          nodes {
+            mediaRecommendation {
+              title {
+                romaji
+              }
+              coverImage {
+                medium
+              }
+            }
+          }
+        }
+      }
+    }`,
+  variables: {}
+}
+
+export { filterQuery, trendingQuery, popularThisSeasonQuery, upcomingNexTSeasonListQuery, allTimePopularQuery, top100Query, mediaPageQuery};

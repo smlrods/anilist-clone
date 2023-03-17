@@ -25,6 +25,7 @@ function getEmojiByPercentage(percentage: number): JSX.Element | undefined {
 }
 
 type Data = {
+  id: number;
   title: {
     romaji: string | null;
     english: string | null;
@@ -269,7 +270,7 @@ const MediaCardChart = forwardRef(({media}: {media: Data | undefined}, ref: any)
   return (
     <div className="media-card" ref={ref ?? childRef}>
       <div className="cover">
-        <Link className="image-link" to={'#'}>
+        <Link className="image-link" to={media && media.title.romaji ? `/anime/${media.id}/${media.title.romaji.replace(/\s+/g,'-')}/` : ''} >
           {media && media.coverImage ?
             <img className="image loaded" src={media.coverImage.extraLarge} />
           : null
@@ -278,11 +279,11 @@ const MediaCardChart = forwardRef(({media}: {media: Data | undefined}, ref: any)
         {media? 
         <div className="overlay">
           {media && media.title ?
-            <Link className="title" to={'#'}>{media.title.romaji}</Link> : null
+            <Link className="title" to={media && media.title.romaji ? `/anime/${media.id}/${media.title.romaji.replace(/\s+/g,'-')}/` : ''} >{media.title.romaji}</Link> : null
           }
           {media && media.studios ?
             <div className="studio" style={{color: `${media.coverImage.color ? media.coverImage.color : 'black'}`}}>
-            <Link to={'#'}>{media.studios && media.studios.nodes.length ? media.studios.nodes[0].name : null}</Link>
+              <Link to={''}>{media.studios && media.studios.nodes.length ? media.studios.nodes[0].name : null}</Link>
             </div> : null
           }
         </div>
@@ -374,7 +375,7 @@ const MediaCardTable = forwardRef(({media, rank}: {media: Data | undefined, rank
           {rank}
         </div>
       : null}
-      <Link className="cover" to={'#'}>
+      <Link className="cover" to={media && media.title.romaji ? `/anime/${media.id}/${media.title.romaji.replace(/\s+/g,'-')}/` : ''} >
         {media ? 
           <img className="" src={media.coverImage.large}/>
         : null}
@@ -382,7 +383,7 @@ const MediaCardTable = forwardRef(({media, rank}: {media: Data | undefined, rank
       <div className="content">
         <div className={`row title ${media ? '' : 'nodata'}`}>
           {media ? 
-            <Link style={{color: `${isHover ? media.coverImage.color : 'black'}`}} to={'#'} onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+            <Link style={{color: `${isHover ? media.coverImage.color : 'black'}`}} to={media && media.title.romaji ? `/anime/${media.id}/${media.title.romaji.replace(/\s+/g,'-')}/` : ''} onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
               <div className="title-wrap">{media.title.romaji}</div>
 
             </Link>
@@ -460,12 +461,12 @@ const MediaCard = forwardRef((props: {media: Data, orientation: string}, ref: an
         setShowInfo(false);
         setIsHover(false);
         }}>
-      <Link className="cover" to={'#'}>
+      <Link className="cover" to={media && media.title.romaji ? `/anime/${media.id}/${media.title.romaji.replace(/\s+/g,'-')}/` : '#'}>
         {media ?
           <img className="image loaded" src={media.coverImage.large ? media.coverImage.large : ''} />
         : null}
       </Link>
-      <Link to={'#'} className='title' style={{color: `${isHover && media ? media.coverImage.color : 'black'}`}}>
+      <Link to={media && media.title.romaji ? `/anime/${media.id}/${media.title.romaji.replace(/\s+/g,'-')}/` : '#'} className='title' style={{color: `${isHover && media ? media.coverImage.color : 'black'}`}}>
         {media ? 
         media.title.romaji: <div className="name-loading"></div>}
       </Link>

@@ -436,6 +436,8 @@ const formatQueries: FormatQueries = {
   'OVA': 'OVA',
   'ONA': 'ONA',
   'Music': 'MUSIC',
+  'Light Novel': 'NOVEL',
+  'Manga': 'MANGA'
 }
 
 interface AiringStatusQueries {

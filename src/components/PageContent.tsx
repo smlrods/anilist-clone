@@ -2,7 +2,8 @@ import Landing from './Landing'
 import Search from './Search'
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { allTimePopularQuery, filterQuery, popularThisSeasonQuery, top100Query, trendingQuery, upcomingNexTSeasonListQuery } from '../data/api/queries';
+import { allTimePopularQuery, filterQuery, mediaPageQuery, popularThisSeasonQuery, top100Query, trendingQuery, upcomingNexTSeasonListQuery } from '../data/api/queries';
+import MediaPage from './MediaPage';
 
 function Home(): JSX.Element {
   return (
@@ -51,6 +52,7 @@ function PageContent (): JSX.Element {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/search/anime' element={<Search query={filterQuery} />} />
+          <Route path='/anime/:id/:title/*' element={<MediaPage query={mediaPageQuery} />}/>
           <Route path='/search/anime/trending' element={<Search title='Trending Anime' query={trendingQuery}/>} />
           <Route path='/search/anime/top-100' element={<Search hasRank={true} title='Top 100 Anime' query={top100Query}/>} />
           <Route path='/search/anime/top-movies' element={<Search title='Top Anime Movies' query={trendingQuery}/>} />

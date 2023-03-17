@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --link-color: nulle0;
+}
+
+@layer components { 
+  .media.media-page-unscoped.media-anime .header-wrap {
+    @apply relative z-[977];
+  }
+
+  .media.media-page-unscoped.media-anime .banner {
+    @apply bg-[50%_35%] bg-no-repeat bg-cover h-[400px] mt-[-58px];
+  }
+
+  .media.media-page-unscoped.media-anime .banner .shadow {
+    @apply bg-[linear-gradient(180deg,rgba(6,13,34,0)_40%,rgba(6,13,34,.6))] h-full w-full;
+  }
+
+  .media.media-page-unscoped.media-anime .header {
+    @apply border-y border-black relative;
+  }
+
+  .media.media-page-unscoped.media-anime .header .container {
+    @apply m-[0_auto] min-w-[320px] px-[20px] w-full min-[1540px]:max-w-[1520px] min-[1540px]:px-[100px] grid gap-[30px] grid-cols-[215px_auto] min-h-[250px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap.overlap-banner {
+    @apply mt-[-125px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap {
+    @apply relative;
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .cover {
+    @apply bg-[#f2f2f2] mt-[15px] w-full;
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions {
+    @apply grid grid-cols-[auto_35px] mb-[20px] mt-[20px] gap-[15px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions .list {
+    @apply items-center border border-black cursor-pointer flex text-[14px] h-[35px] content-center leading-[13px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions .list .add {
+    @apply items-center flex h-full justify-center mx-auto pl-[10px] w-[calc(100%-34px)];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions .list .dropdown.el-dropdown {
+    @apply w-[34px] h-full inline-block relative text-[14px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions .list .dropdown .el-dropdown-link {
+    @apply items-center flex h-full justify-center pr-[4px] w-full outline-0 border-l border-black;
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions .favourite {
+    @apply items-center border border-black bg-red-400 text-white cursor-pointer flex text-[14px] font-extrabold h-[35px] justify-center p-[0_14px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .cover-wrap .actions .favourite .svg-inline--fa.fa-w-16 {
+    @apply w-[14px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .content {
+    @apply inline-grid grid-rows-[min-content_min-content_auto] pt-[25px];
+  }
+
+  .media.media-page-unscoped.media-anime .container .content h1 {
+    @apply text-[19px] font-normal m-0 p-0;
+  }
+
+  .media.media-page-unscoped.media-anime .container .content .description {
+    @apply text-[14px] leading-[21px] m-0 max-w-[900px] p-[15px_0];
+  }
+
+  .media.media-page-unscoped.media-anime .container .content .nav {
+    @apply self-end flex text-[13px] justify-evenly justify-self-center max-w-[800px] pt-[10px] w-full;
+  }
+
+  .media.media-page-unscoped.media-anime .container .content .nav .link {
+    @apply p-[15px] hover:underline;
+  }
+
+  /*
+   * C O N T E N T
+   */
+
+  /* Data */
+  .content.container {
+    @apply grid gap-x-[40px] grid-cols-[208px_auto] mt-[30px] relative;
+  }
+
+  .container {
+    @apply min-[1540px]:max-w-[1520px] min-[1540px]:px-[100px] m-[0_auto] min-w-[320px] px-[20px] w-full;
+  }
+
+  .content.container .sidebar {
+    @apply mt-0;
+  }
+
+  .content.container .sidebar .data {
+    @apply border border-black p-[18px];
+  }
+
+  .airing-countdown {
+    color: #3db3f2;
+  }
+
+  .content.container .sidebar .data .data-set {
+    @apply pb-[14px] capitalize;
+  }
+
+  .content.container .sidebar .data .data-set .type {
+    @apply text-[13px] font-medium pb-[5px];
+  }
+
+  .content.container .sidebar .data .data-set .value {
+    @apply text-[12px] leading-[15.6px];
+  }
+
+  /* Tags */
+  .content.container .sidebar .tags {
+    @apply mt-[20px];
+  }
+
+  .content.container .sidebar .tags .add {
+    @apply cursor-pointer text-[13px] text-center;
+  }
+
+  .media.media-page-unscoped h2 {
+    @apply mb-[10px];
+  }
+
+  h2 {
+    @apply text-[14px] font-medium;
+  }
+
+  h1, h2 {
+    @apply m-0 p-0;
+  }
+
+  .content.container .sidebar .tags .tag {
+    @apply mb-[10px] items-center flex text-[13px] p-[8px_10px] relative border border-black; 
+  }
+
+  .content.container .sidebar .tags .tag .rank {
+    @apply text-[12px] ml-[auto];
+  }
+
+  .content.container .sidebar .external-links {
+    @apply mt-[20px];
+  }
+
+  .content.container .sidebar .external-links .external-links-wrap {
+    @apply block;
+  }
+
+  .content.container .sidebar .external-links .external-links-wrap .external-link {
+    @apply items-center grid text-[13px] font-bold gap-[12px] grid-cols-[24px_auto] h-[30px] leading-[13px] mb-[10px] border border-black;
+  }
+
+  .content.container .sidebar .external-links .external-links-wrap .external-link .icon-wrap {
+    @apply items-center text-white bg-[#0c65a6] flex h-[24px] justify-center ml-[3px] min-w-0 outline-0 outline-none p-[4px] w-full;
+  }
+
+  .content.container .sidebar .external-links .external-links-wrap .external-link .name {
+    @apply text-left mt-[2px];
+  }
+
+  .content.container .sidebar .external-links .external-links-wrap .external-link .name .language {
+    @apply text-[10px] opacity-[0.7];
+  }
+
+  /*
+   * O V E R V I E W
+   */
+  .content.container .overview {
+    @apply overflow-hidden;
+  }
+
+  .content.container .overview > div {
+    @apply mb-[30px];
+  }
+
+  .content.container .overview .grid-wrap {
+    @apply grid gap-x-[30px] gap-y-[15px] grid-cols-[repeat(3,_1fr)];
+  }
+
+  .content.container .overview .grid-wrap .media-preview-card {
+    @apply inline-grid grid-cols-[85px_auto] h-[115px] max-h-[115px] border border-black;
+  }
+
+  .content.container .overview .grid-wrap .media-preview-card .cover {
+    @apply bg-[50%] bg-no-repeat bg-cover;
+  }
+
+  .content.container .overview .grid-wrap .media-preview-card .content {
+    @apply p-[12px] relative;
+  }
+
+  .content.container .overview .grid-wrap .media-preview-card .content .info-header {
+    @apply text-[12px] font-medium mb-[8px] capitalize;
+  }
+
+  .content.container .overview .grid-wrap .media-preview-card .content .title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    @apply text-[14px] overflow-hidden break-words;
+  }
+
+  .content.container .overview .grid-wrap .media-preview-card .content .info {
+    @apply absolute bottom-[12px] text-[12px] left-[12px] capitalize;
+  }
+
+  /* Characters */
+
+  .content.container .overview .grid-wrap .view-character-staff {
+    grid-template-areas: "character staff";
+  }
+
+  .content.container .overview .grid-wrap .role-card {
+    @apply inline-grid grid-cols-[50%_50%] h-[80px] overflow-hidden border border-black;
+  }
+
+  .content.container .overview .grid-wrap .role-card > div {
+    @apply inline-grid grid-cols-[60px_auto];
+    grid-template-areas: "image content";
+  }
+
+  .content.container .overview .grid-wrap .role-card .character {
+    grid-area: character;
+  }
+
+  .content.container .overview .grid-wrap .role-card .cover {
+    @apply bg-[50%] bg-no-repeat bg-cover;
+    grid-area: image;
+  }
+
+  .content.container .overview .grid-wrap .role-card .content{
+    @apply text-[12px] overflow-hidden p-[10px];
+    grid-area: content;
+  }
+
+  .content.container .overview .grid-wrap .role-card.view-character-staff .staff .content{
+    @apply text-right;
+  }
+
+  .content.container .overview .grid-wrap .role-card .staff {
+    grid-area: staff;
+  }
+
+  .content.container .overview .grid-wrap .role-card .name {
+    @apply block h-[48px] leading-[15.6px];
+  }
+
+  .content.container .overview .grid-wrap .role-card .role {
+    @apply text-[11px] overflow-hidden text-ellipsis whitespace-nowrap w-full capitalize;
+  }
+
+  .content.container .overview .grid-wrap .role-card.view-character-staff .staff {
+    grid-template-areas: "content image";
+    @apply grid-cols-[auto_60px];
+  }
+
+  .content.container .overview .grid-wrap .role-card.view-character {
+    @apply grid-cols-[100%];
+    grid-template-areas: "character";
+  }
+
+  .content.container .overview .grid-wrap .role-card.small {
+    @apply h-[70px];
+  }
+
+  .content.container .overview .grid-wrap .role-card.small > div {
+    @apply grid-cols-[52px_auto];
+  }
+
+  .content.container .overview .grid-wrap .role-card.small .staff {
+    grid-area: staff;
+  }
+
+  .content.container .overview .grid-wrap .role-card.view-staff {
+    grid-template-areas: "staff";
+    grid-template-columns: 100%;
+  }
+
+  .content.container .overview .grid-wrap .role-card.view-staff .content .name {
+    @apply h-[38px];
+  }
+  
+  /* Trailer */
+
+  .content.container .overview .grid-section-wrap {
+    @apply grid auto-rows-min gap-x-[30px] gap-y-[30px] grid-cols-[1fr_1fr] grid-rows-[auto];
+    grid-template-areas: "status .";
+  }
+  .content.container .overview .grid-section-wrap .trailer .video {
+    @apply h-[230px] overflow-hidden w-full;
+  }
+
+  /* Recommendations */
+
+  .recommendations h2 {
+    @apply flex justify-center;
+    margin-bottom: 15px !important;
+  }
+
+  .recommendations h2 .view-all {
+    @apply cursor-pointer text-[13px] ml-[auto];
+  }
+
+  .recommendations h2 .view-all > div:last-of-type {
+    @apply ml-[20px];
+  }
+
+  .recommendations h2 .view-all > div {
+    @apply inline-block;
+  }
+
+  .recommendations .wrap {
+    @apply grid grid-cols-[repeat(auto-fill,130px)] gap-[20px] justify-between mt-0;
+  }
+
+  .recommendations .wrap .recommendation-card {
+    @apply max-w-full align-top w-[130px];
+  }
+
+  .recommendations .wrap .recommendation-card .cover {
+    @apply bg-cover	grid grid-rows-[1fr_auto] h-[180px] mb-[10px] overflow-hidden relative w-[130px];
+  }
+
+  .recommendations .wrap .recommendation-card .title {
+    @apply text-[13px] font-semibold leading-[140%] whitespace-normal;
+  }
+
+  .recommendations .wrap .recommendation-card .title > div {
+    @apply overflow-hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}

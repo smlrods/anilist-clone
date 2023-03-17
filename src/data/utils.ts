@@ -21,4 +21,25 @@ function emojiColor(percentage: number): string {
   }
 }
 
-export { getKeyByValue, toHoursAndMinutes, emojiColor }
+function secondsToDays(seconds: number) {
+  return Math.floor((seconds)/86400);
+}
+
+function secondsToHours(seconds: number) {
+  return Math.floor((seconds) / 3600);
+}
+
+function secondsToMinutes(seconds: number) {
+  return Math.floor((seconds)/60);
+}
+
+function minutesToHours(minutes: number) {
+  return Math.floor((minutes)/60);
+}
+
+function getAbbreviatedMonth (month: number) {
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return monthNames[month - 1];
+}
+
+export { getKeyByValue, toHoursAndMinutes, emojiColor, secondsToDays, secondsToHours, secondsToMinutes, minutesToHours, getAbbreviatedMonth }
