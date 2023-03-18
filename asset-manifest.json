@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.546426f6.css",
-    "main.js": "/static/js/main.67db775c.js",
-    "static/js/787.c3af69e1.chunk.js": "/static/js/787.c3af69e1.chunk.js",
-    "index.html": "/index.html",
-    "main.546426f6.css.map": "/static/css/main.546426f6.css.map",
-    "main.67db775c.js.map": "/static/js/main.67db775c.js.map",
-    "787.c3af69e1.chunk.js.map": "/static/js/787.c3af69e1.chunk.js.map"
+    "main.css": "/anilist-clone/static/css/main.546426f6.css",
+    "main.js": "/anilist-clone/static/js/main.33bdbf59.js",
+    "static/js/787.c3af69e1.chunk.js": "/anilist-clone/static/js/787.c3af69e1.chunk.js",
+    "index.html": "/anilist-clone/index.html",
+    "main.546426f6.css.map": "/anilist-clone/static/css/main.546426f6.css.map",
+    "main.33bdbf59.js.map": "/anilist-clone/static/js/main.33bdbf59.js.map",
+    "787.c3af69e1.chunk.js.map": "/anilist-clone/static/js/787.c3af69e1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.546426f6.css",
-    "static/js/main.67db775c.js"
+    "static/js/main.33bdbf59.js"
   ]
 }
