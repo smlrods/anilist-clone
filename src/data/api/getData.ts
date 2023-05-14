@@ -1,6 +1,6 @@
 const getData = async (query: string, variables: any) => {
   // Define the config we'll need for our API request
-  const url = 'https://cors-anywhere.herokuapp.com/https://graphql.anilist.co',
+  const url = 'https://graphql.anilist.co',
         options = {
           method: 'POST',
           headers: {
